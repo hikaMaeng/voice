@@ -46,7 +46,9 @@ class Adapter:
         gk = {"task": "transcribe"}
         if lang:
             gk["language"] = ISO.get(lang, lang)
-        words = bool(p.get("word_timestamps", True))
+        # 띄어쓰기가 없는 언어는 파이프라인의 「단어」가 문장 덩어리가 된다(일본어 실측: 25 s 에 단어 7개 → 구간 3개).
+        # 그때는 Whisper 자체 구간 시각을 쓴다
+        words = bool(p.get("word_timestamps", True)) and (lang or "") not in ("ja", "zh", "yue", "th")
         r = self.pipe({"raw": y, "sampling_rate": 16000}, return_timestamps="word" if words else True,
                       chunk_length_s=int(p.get("chunk_length_s", 30)), batch_size=int(p.get("batch_size", 8)), generate_kwargs=gk)
         chunks = r.get("chunks") or []

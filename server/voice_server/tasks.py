@@ -239,8 +239,44 @@ def _ref_for(p: dict, gdir: Path) -> dict:
         raise RuntimeError("참조 세트를 고른다")
     if p.get("ref_text"):   # 폼에서 전사문을 이번 생성에만 고쳐 쓸 때
         snap["text"] = p["ref_text"].strip()
+    max_s = ENGINES[MODELS[p["model"]]["engine"]].get("max_ref_s")
+    if max_s and (snap.get("clip_duration") or 0) > max_s:
+        _fit_ref(snap, store.get("refs", snap.get("id") or "") if p.get("ref_id") else None, gdir, max_s, p.get("job"))
     (gdir / "ref" / "text.txt").write_text(snap["text"], encoding="utf-8")
     return snap
+
+
+def _fit_ref(snap: dict, ref: dict | None, gdir: Path, max_s: float, job=None) -> None:
+    """참고 길이에 상한이 있는 엔진(X-Voice: 12 s 를 넘으면 오디오만 자르고 전사문은 그대로 둬 소리와 글이 어긋난다)용 —
+    세트의 문장 구간 안에서 상한에 맞는 가장 긴 연속 구간을 골라 다시 자르고, 그 구간의 전사문을 쓴다."""
+    segs = (ref or {}).get("segments") or []
+    if not segs:
+        raise RuntimeError(f"이 엔진은 참고가 {max_s:.0f} s 이하여야 한다(지금 {snap.get('clip_duration')} s). "
+                           "자동 모드 세트를 쓰거나 짧게 다시 자른 세트를 쓴다")
+    lo0, hi0 = ref["cut"]
+    inside = [x for x in segs if x["start"] >= lo0 - 0.05 and x["end"] <= hi0 + 0.05]
+    budget = max_s - A.LEAD_S - A.TAIL_S - 0.3
+    best = None
+    for i in range(len(inside)):
+        for k in range(i, len(inside)):
+            span = inside[k]["end"] - inside[i]["start"]
+            if span > budget:
+                break
+            if best is None or span > best[1] - best[0]:
+                best = (inside[i]["start"], inside[k]["end"], i, k)
+    if best is None:
+        raise RuntimeError(f"참고 안에 {max_s:.0f} s 이하 문장 구간이 없다 — 짧은 세트를 쓴다")
+    s0, s1, i, k = best
+    mono, sr = A.read_mono(UPLOADS / ref["upload"]["id"] / "audio.wav")
+    lo, hi = A.cut_bounds(mono, sr, segs, s0, s1)
+    clip = A.make_clip(mono, sr, lo, hi)
+    sf.write(str(gdir / "ref" / "clip.wav"), clip, sr)
+    text = " ".join(x["text"] for x in inside[i:k + 1]).strip()
+    snap["engine_fit"] = {"max_s": max_s, "from_text": snap["text"], "from_cut": [lo0, hi0], "cut": [round(lo, 3), round(hi, 3)],
+                          "text_source": "ASR 구간(사람이 고친 전사문은 구간별로 나눌 수 없다)" if ref.get("text_edited") else "ASR 구간"}
+    snap.update({"text": text, "clip_duration": round(len(clip) / sr, 3), "clip_sha256": sha_file(gdir / "ref" / "clip.wav")})
+    if job is not None:
+        job.say(f"참고를 {snap['clip_duration']} s 로 다시 잘랐다(엔진 상한 {max_s} s): {text[:60]}")
 
 
 def tts_job(job) -> dict:
@@ -255,7 +291,7 @@ def tts_job(job) -> dict:
     gid = new_id()
     gdir = GENS / gid
     (gdir / "parts").mkdir(parents=True)
-    ref = _ref_for(p, gdir)
+    ref = _ref_for({**p, "job": job}, gdir)
     text = p["text"]
     used = read_numbers(text) if params.get("normalize_numbers") and language == "ko" else text
     pieces = A.split_text(used, params["split"])

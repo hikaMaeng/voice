@@ -142,10 +142,11 @@ ENGINES: dict[str, dict] = {
     },
     "xvoice": {
         "kind": "tts", "label": "X-Voice Stage1 (F5-TTS 계열)", "env": "xvoice", "adapter": "tts_xvoice",
+        "max_ref_s": 11.5,   # 12 s 를 넘는 참고는 엔진이 오디오만 자른다(전사문 불일치) — 서버가 문장 경계로 미리 자른다
         "languages": ["ko", "ja", "en", "zh", "de", "fr", "es", "it", "pt", "ru"],
         "batch": False, "deterministic": False,
         "use": "실험용. 가장 작은 모델(2.0 GB).",
-        "caveat": "발음이 뭉개지고 첫머리 저음이 생긴다(3/10). 비상업.",
+        "caveat": "발음이 뭉개지고 첫머리 저음이 생긴다(3/10). 비상업. 참고는 11.5 s 이하로 자동 재절단.",
         "params": [
             P("nfe_step", "NFE 단계", "int", 32, "", min=4, max=64),
             P("cfg_strength", "cfg strength", "float", 2.0, "", min=0, max=5, step=0.1),
@@ -196,7 +197,7 @@ ENGINES: dict[str, dict] = {
         "caveat": "시각은 VAD 구간 단위(단어 시각 없음).",
         "params": [
             P("use_itn", "역정규화(숫자·문장부호)", "bool", True, "", "basic"),
-            P("merge_length_s", "구간 합치기(초)", "float", 15, "", min=1, max=60, step=1),
+            P("merge_length_s", "구간 합치기(초)", "float", 8, "짧은 VAD 구간을 이 길이까지 합친다(VAD 한 구간 상한 10 s)", min=1, max=30, step=1),
         ],
     },
     # ───────────────────────── 시험용 ─────────────────────────

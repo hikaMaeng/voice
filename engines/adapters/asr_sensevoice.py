@@ -12,7 +12,8 @@ class Adapter:
         from funasr import AutoModel
         dev = "cuda:0" if self.ctx.device.startswith("cuda") else "cpu"
         vad = next(iter(self.ctx.model["aux"].values()))
-        self.vad = AutoModel(model=vad, device=dev, disable_update=True, max_single_segment_time=30000)
+        # VAD 한 구간 상한 10 s — 깨끗한 음성은 쉼이 짧아 30 s 상한이면 25 s 가 한 구간(자막 한 줄)이 됐다
+        self.vad = AutoModel(model=vad, device=dev, disable_update=True, max_single_segment_time=10000)
         self.model = AutoModel(model=self.ctx.model["path"], device=dev, disable_update=True)
 
     def asr(self, audio, language, p):

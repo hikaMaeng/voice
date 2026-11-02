@@ -14,5 +14,7 @@ export default defineConfig({
     screenshot: "only-on-failure",
     trace: "retain-on-failure",
     locale: "ko-KR",
+    actionTimeout: 30_000,
+    navigationTimeout: 60_000,
   },
 });

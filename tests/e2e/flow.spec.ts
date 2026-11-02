@@ -79,9 +79,9 @@ test("참조 세트 → TTS → 결과 불러오기 → ASR → SRT (모의 엔�
   const create = page.getByTestId("ref-create");
   await create.getByTestId("ref-upload-file").setInputFiles({ name: `e2e-${stamp}.wav`, mimeType: "audio/wav", buffer: sineWav(12) });
   await expect(create.getByTestId("ref-upload-status")).toBeVisible();
-  await create.getByLabel("세트 이름").fill(`e2e 세트 ${stamp}`);
+  await create.getByLabel("세트 이름", { exact: true }).fill(`e2e 세트 ${stamp}`);
   await create.getByRole("radio", { name: /자동/ }).check();
-  await create.getByLabel("자동 전사 ASR 모델").selectOption("mock-asr");
+  await create.getByLabel("자동 전사 ASR 모델", { exact: true }).selectOption("mock-asr");
   await expect(create.getByRole("button", { name: "참조 세트 만들기" })).toBeDisabled();   // 동의 전
   await create.getByTestId("ref-consent-basis").selectOption("synthetic");
   await create.getByTestId("ref-consent-agree").check();
@@ -94,11 +94,14 @@ test("참조 세트 → TTS → 결과 불러오기 → ASR → SRT (모의 엔�
   await item.getByTestId("ref-edit-text").fill("사람이 고친 전사문입니다");
   await item.getByRole("button", { name: "세트 저장" }).click();
   await expect(item.getByTestId("ref-text-value")).toContainText("사람이 고친 전사문입니다");
-  await item.getByRole("button", { name: "이 세트로 생성" }).click();
+  // 방금 만든 세트는 생성 폼에 자동 선택된다 — 그때 「이 세트로 생성」은 비활성
+  const useBtn = item.getByRole("button", { name: "이 세트로 생성" });
+  if (await useBtn.isEnabled()) await useBtn.click();
+  await expect(item).toHaveAttribute("data-selected", "true");
 
   const form = page.getByTestId("tts-form");
-  await form.getByLabel("TTS 모델").selectOption("mock-tts");
-  await form.getByLabel("대본").fill("첫 문단 3개입니다.\n\n둘째 문단입니다.");
+  await form.getByLabel("TTS 모델", { exact: true }).selectOption("mock-tts");
+  await form.getByLabel("대본", { exact: true }).fill("첫 문단 3개입니다.\n\n둘째 문단입니다.");
   await form.getByTestId("param-seed").fill("77");
   await form.getByTestId("param-pitch_hz").fill("330");
   await form.getByRole("button", { name: "생성" }).click();
@@ -134,7 +137,7 @@ test("참조 세트 → TTS → 결과 불러오기 → ASR → SRT (모의 엔�
   const sel = page.getByTestId("asr-upload-select");
   const opt = sel.locator("option", { hasText: `e2e-${stamp}` }).first();
   await sel.selectOption((await opt.getAttribute("value")) as string);
-  await page.getByLabel("ASR 모델").selectOption("mock-asr");
+  await page.getByLabel("ASR 모델", { exact: true }).selectOption("mock-asr");
   await page.getByRole("button", { name: "전사 실행" }).click();
   await expect(page.getByTestId("asr-job")).toHaveAttribute("data-status", "done", { timeout: 120_000 });
   const viewer = page.getByTestId("asr-viewer");
@@ -157,9 +160,9 @@ test("실제 엔진: Qwen3-TTS 1.7B 를 웹에서 생성(@gpu)", async ({ page, 
   test.skip(!ref, "fw-large-v3 로 만든 참조 세트가 필요");
   await page.goto("/#/tts");
   const form = page.getByTestId("tts-form");
-  await form.getByLabel("TTS 모델").selectOption("qwen3-tts-1.7b-base");
-  await form.getByLabel("참조 세트").selectOption(`ref:${ref.id}`);
-  await form.getByLabel("대본").fill("웹 화면에서 만든 첫 번째 문장입니다.\n\n두 번째 문단도 이어서 읽습니다.");
+  await form.getByLabel("TTS 모델", { exact: true }).selectOption("qwen3-tts-1.7b-base");
+  await form.getByLabel("참조 세트", { exact: true }).selectOption(`ref:${ref.id}`);
+  await form.getByLabel("대본", { exact: true }).fill("웹 화면에서 만든 첫 번째 문장입니다.\n\n두 번째 문단도 이어서 읽습니다.");
   await form.getByTestId("param-seed").fill("4242");
   await form.getByTestId("param-verify").check();
   await form.getByRole("button", { name: "생성" }).click();

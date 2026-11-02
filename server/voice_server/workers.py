@@ -44,6 +44,8 @@ class Worker:
         self.busy = False
         self.loaded = False
         self.last_used = time.time()
+        self.vram_actual: dict[str, float] = {}   # uuid → 싣기 전후 + 작업 전후로 잰 VRAM 증가(GB). 작업자 수명 동안
+        self.used_at_start: dict[str, float] = {}
         self._seq = 0
         self._waiters: dict[str, queue.Queue] = {}
         self._wlock = threading.Lock()
@@ -161,5 +163,5 @@ class Worker:
 
     def info(self) -> dict:
         return {"engine": self.engine, "model": self.model_key, "pid": self.pid, "alive": self.alive(),
-                "busy": self.busy, "loaded": self.loaded, "gpus": self.gpu_indices,
+                "busy": self.busy, "loaded": self.loaded, "gpus": self.gpu_indices, "vram_gb": self.vram_actual,
                 "idle_s": round(time.time() - self.last_used), "log": self.log_path.name}

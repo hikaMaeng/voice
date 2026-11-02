@@ -147,9 +147,17 @@ def _allowed(g: dict) -> bool:
     return allowed is None or g["uuid"] in allowed
 
 
+def _worker_vram(w: Worker, uuid: str) -> float:
+    """작업자가 그 카드에서 쓰는 VRAM — 싣기 전후로 잰 실제 증가량, 없으면 카탈로그 추정.
+    Windows(WDDM)는 프로세스별 사용량을 주지 않아, 추정만 쓰면 우리 작업자가 더 쓴 몫을 「다른 프로그램」으로 잘못 센다
+    (실측: Drama 추정 15 GB 인데 카드를 거의 채워 「다른 프로그램 사용 3.0 GB」로 막혔다)."""
+    if uuid in w.vram_actual:
+        return w.vram_actual[uuid]
+    return float(MODELS[w.model_key].get("vram_gb") or 0) / max(1, len(w.gpu_uuids))
+
+
 def _our_vram(uuid: str) -> float:
-    return sum(float(MODELS[w.model_key].get("vram_gb") or 0) / max(1, len(w.gpu_uuids))
-               for w in _workers.values() if uuid in w.gpu_uuids and w.alive())
+    return sum(_worker_vram(w, uuid) for w in _workers.values() if uuid in w.gpu_uuids and w.alive())
 
 
 def device_view() -> list[dict]:
@@ -183,8 +191,7 @@ def _pick(n: int, need_gb: float, job: Job) -> list[dict] | None:
         hard = [w for w in g["blocked"] if not w.startswith("작업 중")]
         if hard or g["uuid"] in _gpu_lock:
             continue
-        reclaim = sum(float(MODELS[w.model_key].get("vram_gb") or 0) / max(1, len(w.gpu_uuids))
-                      for w in _workers.values() if g["uuid"] in w.gpu_uuids and not w.busy)
+        reclaim = sum(_worker_vram(w, g["uuid"]) for w in _workers.values() if g["uuid"] in w.gpu_uuids and not w.busy)
         per = need_gb / n
         room = g["free_gb"] + reclaim - reserve
         # 카드보다 큰 모델(Fish 19.7 GB > 16 GB)은 카드가 거의 비었을 때만 넣는다 — 드라이버가 공유 메모리로 넘긴다
@@ -234,6 +241,9 @@ def acquire(job: Job, engine: str, model_id: str, extra_env: dict | None = None)
     job.devices = w.gpu_indices or ["cpu"]
     if not w.loaded:
         _load(job, w, model_id, engine, extra_env)
+        w = job.worker   # 재시도로 새 작업자가 됐을 수 있다
+    # 생성 중에 늘어난 메모리(캐시 할당자가 놓지 않는다)도 그 작업자 몫으로 더하려고 시작 시점 사용량을 적어 둔다
+    w.used_at_start = {g["uuid"]: g["used_gb"] for g in resources.gpus() if g["uuid"] in w.gpu_uuids}
     job.set(status="running")
     return w
 
@@ -319,6 +329,7 @@ def _load(job: Job, w: Worker, model_id: str, engine: str, extra_env) -> None:
                                    "모델 관리에서 받거나 위치를 지정한다")
         job.set(stage=f"모델 싣는 중 — {MODELS[model_id]['label']}", status="loading")
         t0 = time.time()
+        before = {g["uuid"]: g["used_gb"] for g in resources.gpus() if g["uuid"] in w.gpu_uuids}
 
         def prog(msg):
             job.set(stage="모델 싣는 중 — " + (msg.get("stage") or ""))
@@ -327,6 +338,11 @@ def _load(job: Job, w: Worker, model_id: str, engine: str, extra_env) -> None:
         try:
             r = w.call("load", {"model": model_payload(model_id), "engine": engine}, on_progress=prog, cancel=job.cancel)
             w.loaded = True
+            after = {g["uuid"]: g["used_gb"] for g in resources.gpus() if g["uuid"] in w.gpu_uuids}
+            # 같은 카드에서 다른 작업자가 동시에 싣지 않는다(카드 락) — 증가량은 이 작업자 몫
+            w.vram_actual = {u: round(max(0.0, after[u] - before.get(u, after[u])), 2) for u in after}
+            if w.vram_actual:
+                job.say("실제 VRAM 증가 " + ", ".join(f"{v:.1f} GB" for v in w.vram_actual.values()))
             job.say(f"모델 실음 {time.time() - t0:.1f}s · {r.get('device', '')}")
             return
         except Cancelled:
@@ -352,6 +368,13 @@ def _load(job: Job, w: Worker, model_id: str, engine: str, extra_env) -> None:
 def release(job: Job, w: Worker | None = None) -> None:
     w = w or job.worker
     if w is not None:
+        if w.alive() and getattr(w, "used_at_start", None):
+            now = {g["uuid"]: g["used_gb"] for g in resources.gpus() if g["uuid"] in w.used_at_start}
+            for u, v in now.items():   # 카드 락으로 이 작업만 그 카드를 썼다 — 늘어난 몫은 이 작업자 것
+                grow = v - w.used_at_start[u]
+                if grow > 0.2:
+                    w.vram_actual[u] = round(w.vram_actual.get(u, 0.0) + grow, 2)
+            w.used_at_start = {}
         w.busy = False
         w.last_used = time.time()
         if not w.alive():

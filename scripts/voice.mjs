@@ -22,7 +22,10 @@ const URL_ = `http://${HOST === "0.0.0.0" ? "127.0.0.1" : HOST}:${PORT}`;
 
 function run(cmd, args, opts = {}) {
   console.log(`$ ${cmd} ${args.join(" ")}`);
-  const r = spawnSync(cmd, args, { stdio: "inherit", cwd: ROOT, shell: WIN, ...opts });
+  // Windows 의 npm 은 npm.cmd 라 셸이 필요하다 — 인자를 배열로 셸에 넘기면 Node 가 경고하므로 한 줄로 넘긴다(인자에 공백 없음)
+  const r = WIN
+    ? spawnSync(`${cmd} ${args.join(" ")}`, { stdio: "inherit", cwd: ROOT, shell: true, ...opts })
+    : spawnSync(cmd, args, { stdio: "inherit", cwd: ROOT, ...opts });
   if (r.status !== 0) {
     console.error(`실패(코드 ${r.status}): ${cmd} ${args.join(" ")}`);
     process.exit(r.status || 1);
@@ -30,7 +33,7 @@ function run(cmd, args, opts = {}) {
 }
 
 function need(cmd, hint) {
-  const r = spawnSync(cmd, ["--version"], { shell: WIN, encoding: "utf8" });
+  const r = WIN ? spawnSync(`${cmd} --version`, { shell: true, encoding: "utf8" }) : spawnSync(cmd, ["--version"], { encoding: "utf8" });
   if (r.status !== 0) {
     console.error(`${cmd} 가 없다 — ${hint}`);
     process.exit(1);
