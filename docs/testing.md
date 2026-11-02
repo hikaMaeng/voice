@@ -4,7 +4,7 @@
 |---|---|---|---|
 | 단위·통합(모의 엔진) | `npm run test:unit` | 카탈로그 완결성 · 파라미터 채우기 · 숫자 읽기 · 참고 창 고르기 · 끝 무음 · SRT/VTT · 업로드→세트(동의 거절 포함)→TTS→**참고 세트 삭제 후 사본으로 같은 해시 재현**→ASR→SRT · 작업자 트리 종료 확인 | pytest 출력 |
 | 엔진 실측(GPU) | `uv run python tests/integration/engine_matrix.py …` | TTS·ASR 모델마다 같은 참조·대본으로 실제 생성·전사, 결과 기록 | `tests/reports/engine-matrix/<시각>.json` + 같은 폴더의 보고서 |
-| 브라우저(헤드리스) | `npm run test:e2e`(배포된 서버, `VOICE_E2E_BASE`) | 화면 6개를 마크업 계약으로 조작 — 모의 엔진으로 업로드→참조 세트→생성→결과 불러오기→ASR→SRT, 설정의 GPU 체크 | `tests/reports/browser-e2e/<시각>.md` |
+| 브라우저(헤드리스) | `VOICE_E2E_BASE=http://192.168.0.29:8765 [VOICE_E2E_GPU=1] npm run test:e2e`(원격 4080x2 에 배포된 서버를 개발 PC 에서) | 화면 6개를 마크업 계약으로 조작 — 모의 엔진으로 업로드→참조 세트→생성→결과 불러오기→ASR→SRT, 설정의 GPU 체크 | `tests/reports/browser-e2e/<시각>.md` |
 
 계획서: `tests/plans/*-YYYYMMDD.md`. 보고서: `tests/reports/<이름>/YYYYMMDD_HHMMSS.md`.
 

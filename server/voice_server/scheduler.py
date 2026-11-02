@@ -293,7 +293,8 @@ def _try_acquire(job, engine, model_id, n, need, gpu_allowed, e, extra_env) -> W
         old.shutdown()
         _drop(old)
     if devs:   # Vulkan 처럼 CUDA_VISIBLE_DEVICES 가 안 먹는 백엔드가 카드를 이름으로 맞출 수 있게
-        extra_env = {**(extra_env or {}), "VOICE_GPU_NAME": devs[0]["name"], "VOICE_GPU_INDEX": str(devs[0]["index"])}
+        extra_env = {**(extra_env or {}), "VOICE_GPU_NAME": devs[0]["name"], "VOICE_GPU_INDEX": str(devs[0]["index"]),
+                     "VOICE_GPU_FREE_GB": str(devs[0]["free_gb"])}
     try:
         w = Worker(engine, e["env"], e["adapter"], model_id, uuids, [d["index"] for d in devs], extra_env)
     except WorkerError as ex:

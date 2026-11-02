@@ -11,10 +11,10 @@ TTS 10종(실측: 원격 RTX 4080 16 GB, 일본어 참고 11.5 s → 한국어 1
 | moss · MOSS-TTS v1.5 8B | moss | ○ | 0.977 | 7.2+10.5 GB | **카드 2장**(층 10/26 분할) |
 | higgs · Higgs v3 4B(transformers 포팅) | higgs(transformers 5.22.1) | ✕ | 0.968 | 8.7 GB | |
 | omni · OmniVoice 0.6B | omni | ○ | 0.909~0.929 | 4.8 GB | RTF 0.40 |
-| chat · Chatterbox Multilingual V3 | chat(torch 2.6) | ○ MIT | 0.929~0.953 | 3.6 GB | 참고 언어≠대본 언어면 cfg 0(자동) |
+| chat · Chatterbox Multilingual V3 | chat(torch 2.6) | ○ MIT | 0.929~0.953 | 3.6 GB | 참고 언어≠대본 언어면 cfg 0(자동). 이 서비스 실측: 짧은 첫 문단이 27.3 s 로 폭주(3090·4080 에서 같은 길이로 재현) → `warn` |
 | cosy · Fun-CosyVoice3 0.5B | cosy(Python 3.10 · torch 2.3.1) | ○ | 0.888 | 3.5 GB | 결정적 |
 | fish · Fish S2-Pro 4B | fish | ✕ | 0.949~0.952 | 19.7 GB | 16 GB 카드 넘침 |
-| drama · Fish Drama 3 Q4_K GGUF | drama(speech.cpp 0.10.0 Vulkan) | △ | 0.955 | 16 GB+CPU | Vulkan 번호 ≠ CUDA 번호 |
+| drama · Fish Drama 3 Q4_K GGUF | drama(speech.cpp 0.10.0 Vulkan) | △ | 0.955 | 16 GB+CPU | Vulkan 번호 ≠ CUDA 번호. 카드 이름으로 맞추고, 같은 이름(4080x2)이면 남은 메모리로 가리며 못 가리면 경고 — 옵션 「Vulkan 장치 번호」로 고정 |
 | xvoice · X-Voice Stage1 0.4B | xvoice(transformers 4.48.3, eSpeak) | ✕ NC | 0.897 | 2.0 GB | 첫머리 저음 3/10 |
 
 ASR 5종 9모델: faster-whisper(large-v3 **기본**·large-v3-turbo·medium) · Whisper transformers(large-v3·large-v3-turbo) ·

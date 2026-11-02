@@ -49,8 +49,10 @@ class Adapter:
         # 띄어쓰기가 없는 언어는 파이프라인의 「단어」가 문장 덩어리가 된다(일본어 실측: 25 s 에 단어 7개 → 구간 3개).
         # 그때는 Whisper 자체 구간 시각을 쓴다
         words = bool(p.get("word_timestamps", True)) and (lang or "") not in ("ja", "zh", "yue", "th")
-        r = self.pipe({"raw": y, "sampling_rate": 16000}, return_timestamps="word" if words else True,
-                      chunk_length_s=int(p.get("chunk_length_s", 30)), batch_size=int(p.get("batch_size", 8)), generate_kwargs=gk)
+        kw = {}
+        if len(y) > 30 * 16000:   # 30 s 이하에 조각 처리를 켜면 구간이 조각 경계(8 s 단위)로 뭉툭해졌다 — 긴 파일에만
+            kw = dict(chunk_length_s=int(p.get("chunk_length_s", 30)), batch_size=int(p.get("batch_size", 8)))
+        r = self.pipe({"raw": y, "sampling_rate": 16000}, return_timestamps="word" if words else True, generate_kwargs=gk, **kw)
         chunks = r.get("chunks") or []
         if words:
             ws = [{"start": float(c["timestamp"][0] or 0), "end": float(c["timestamp"][1] or c["timestamp"][0] or 0),

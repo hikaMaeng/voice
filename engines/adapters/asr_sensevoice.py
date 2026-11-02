@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import re
 
+from ._common import energy_segments
+
 
 class Adapter:
     def __init__(self, ctx):
@@ -12,8 +14,8 @@ class Adapter:
         from funasr import AutoModel
         dev = "cuda:0" if self.ctx.device.startswith("cuda") else "cpu"
         vad = next(iter(self.ctx.model["aux"].values()))
-        # VAD 한 구간 상한 10 s — 깨끗한 음성은 쉼이 짧아 30 s 상한이면 25 s 가 한 구간(자막 한 줄)이 됐다
-        self.vad = AutoModel(model=vad, device=dev, disable_update=True, max_single_segment_time=10000)
+        # VAD 상한을 10 s 로 줄였더니 말 한가운데를 잘랐다(일본어 실측: 「命」 잘림) — 30 s 로 두고, 긴 구간은 무음 지점에서 다시 나눈다
+        self.vad = AutoModel(model=vad, device=dev, disable_update=True, max_single_segment_time=30000)
         self.model = AutoModel(model=self.ctx.model["path"], device=dev, disable_update=True)
 
     def asr(self, audio, language, p):
@@ -29,6 +31,16 @@ class Adapter:
                 merged[-1][1] = b
             else:
                 merged.append([a, b])
+        # 합친 구간이 상한보다 길면(깨끗한 음성은 쉼이 짧아 VAD 가 25 s 를 한 구간으로 준다) 그 안의 무음 지점에서 나눈다
+        pieces = []
+        for a, b in merged:
+            if b - a <= lim:
+                pieces.append([a, b])
+                continue
+            seg = y[int(a * sr / 1000): int(b * sr / 1000)]
+            for s0, s1 in energy_segments(seg, sr, 0.25, lim / 1000):
+                pieces.append([a + s0 * 1000, a + s1 * 1000])
+        merged = pieces
         segs, langs = [], []
         for k, (a, b) in enumerate(merged):
             piece = y[int(a * sr / 1000): int(b * sr / 1000)]

@@ -26,6 +26,23 @@
 데스크톱 세션에서는 S:, SSH 세션에서는 전역 SMB 로 붙인 N: 로 보인다. 폴더 규약 `<루트>\<owner>\<repo>`(HF 저장소 이름 그대로).
 받기는 `snapshot_download(local_dir=…)` 로 평범한 폴더에 받는다(HF 캐시 구조 아님 — 옮기기·위치 지정이 쉽다).
 
+## 운영 방식(2026-11-02 사용자 지시)
+
+| 역할 | 기계 | 방법 |
+|---|---|---|
+| 코드 수정·관리 | 개발 PC(`F:\dev\voice`) | 커밋 → `git push origin main`(https://github.com/hikaMaeng/voice) |
+| 서버 실행·실제 시험(GPU) | 원격 4080x2(`D:\voice`) | `git pull` → `npm run deploy`(아래) |
+| 시험 브라우저 | 개발 PC | Chrome·Playwright 로 `http://192.168.0.29:8765` |
+
+개발 PC 에서는 서버를 띄우지 않는다. 원격 배포(PowerShell, uv 가 PATH 밖에 있다):
+
+```powershell
+$env:PATH='D:\wanrender\bin;'+$env:PATH; $env:VOICE_HOST='0.0.0.0'; cd D:\voice; git pull; npm run deploy
+```
+
+SSH 로 배포하면 서버가 세션과 함께 죽지 않게 `scripts/voice.mjs` 가 WMI(`Win32_Process.Create`)로 세션 밖에서 띄운다.
+원격은 SSH 세션에서 S: 가 안 보여 모델 루트가 `N:\models`(같은 NAS 공유)로 잡힌다.
+
 ## 다른 PC 로 이식
 
 저장소를 받아 `npm run deploy` 하고, 엔진 환경은 그 PC 에서 웹으로 새로 설치한다(환경 폴더 복사 금지 — uv 실행기가 만든 기계의 Python 경로를 박아 둔다).

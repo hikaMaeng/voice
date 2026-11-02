@@ -8,6 +8,7 @@ from __future__ import annotations
 import base64
 import json
 import os
+import re
 import subprocess
 
 import numpy as np
@@ -38,17 +39,32 @@ class Adapter:
             raise RuntimeError(f"GGUF 가 없다: {self.gguf}")
 
     def _vulkan_index(self, p) -> int:
+        """서버가 고른 카드에 맞는 Vulkan 번호. 이름이 하나만 맞으면 그것, 같은 이름이 여럿이면(4080x2) 남은 메모리가
+        서버가 잰 그 카드의 남은 메모리(VOICE_GPU_FREE_GB)에 가장 가까운 것. 그래도 못 가리면 경고하고 설정 값을 쓰라고 남긴다."""
         v = int(p.get("vulkan_index", -1))
         if v >= 0:
             return v
         want = os.environ.get("VOICE_GPU_NAME", "")
+        free_want = float(os.environ.get("VOICE_GPU_FREE_GB", "-1"))
+        if free_want >= 0:
+            free_want *= 2**30 / 1e9   # 서버(NVML)는 GiB, speech.exe 는 10진 GB(16 GiB 카드를 17.1 GB 로 적는다)
+        cands = []
         try:
             out = subprocess.run([self.exe, "devices"], capture_output=True, text=True, encoding="utf-8", timeout=60).stdout
-            for line in out.splitlines():
-                if "Vulkan" in line and want and want.split()[-1] in line:
-                    return int(line.split("Vulkan", 1)[1].split()[0].strip(":"))
+            for line in out.splitlines():   # 예: "Vulkan0    gpu   NVIDIA GeForce RTX 4080, 17.1 GB, 16.2 GB free"
+                m = re.match(r"\s*Vulkan(\d+)\s+gpu\s+(.+?),\s*([\d.]+) GB,\s*([\d.]+) GB free", line)
+                if m and want and m.group(2).strip() == want:
+                    cands.append((int(m.group(1)), float(m.group(4))))
         except Exception as ex:
             self.ctx.log(f"Vulkan 장치 목록 실패: {ex}")
+        if len(cands) == 1:
+            return cands[0][0]
+        if len(cands) > 1:
+            cands.sort(key=lambda c: abs(c[1] - free_want))
+            if free_want < 0 or abs(cands[0][1] - free_want) + 1.0 > abs(cands[1][1] - free_want):
+                self.ctx.log(f"⚠ 같은 이름의 Vulkan 장치가 {len(cands)}개라 카드를 확실히 못 가린다 — Vulkan{cands[0][0]} 을 쓴다. "
+                             "엔진 옵션 「Vulkan 장치 번호」로 직접 정한다")
+            return cands[0][0]
         return int(os.environ.get("VOICE_VULKAN_INDEX", "0"))
 
     def _start(self, ref, p):

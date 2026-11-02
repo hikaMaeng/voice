@@ -1,0 +1,690 @@
+{
+ "started": "2026-11-02 14:26:39",
+ "base": "http://192.168.0.29:8765",
+ "ref": "20261102-142445-b1756b",
+ "upload": "20261102-142445-aa36db",
+ "seed": 2026,
+ "verify": true,
+ "text": "이해되는 에이아이, 1편. 엘엘엠의 어텐션이란?\n\n똑같이 밥이 들어가는데, 하나는 걱정이고 하나는 핀잔이죠.",
+ "settings": {
+  "model_root": "N:\\models",
+  "model_paths": {},
+  "gpu_mode": "auto",
+  "allowed_gpus": null,
+  "vram_reserve_gb": 1.0,
+  "avoid_foreign_gpu": true,
+  "foreign_vram_gb": 2.0,
+  "temp_limit_c": 87,
+  "allow_cpu": true,
+  "cpu_threads": 0,
+  "idle_unload_min": 20,
+  "max_resident": 3,
+  "hf_endpoint": "",
+  "show_test_engines": false,
+  "default_tts_model": "qwen3-tts-1.7b-base",
+  "default_asr_model": "fw-large-v3"
+ },
+ "gpus": [
+  {
+   "index": 0,
+   "name": "NVIDIA GeForce RTX 4080",
+   "uuid": "GPU-a51f23d1-b454-3d01-8187-5550eef890c2",
+   "allowed": true,
+   "blocked": []
+  },
+  {
+   "index": 1,
+   "name": "NVIDIA GeForce RTX 4080",
+   "uuid": "GPU-a044d760-4878-72e4-181c-4dd409e8146b",
+   "allowed": true,
+   "blocked": []
+  }
+ ],
+ "service": {
+  "version": "0.1.0",
+  "git": "92b960c",
+  "dirty": false
+ },
+ "tts": [
+  {
+   "model": "qwen3-tts-1.7b-base",
+   "status": "done",
+   "error": "",
+   "devices": [
+    1
+   ],
+   "wall_s": 105.7,
+   "log_tail": [],
+   "generation_id": "20261102-142640-41f555",
+   "result_status": "ok",
+   "duration": 9.624,
+   "timings": {
+    "wait_load_s": 82.49,
+    "gen_s": 19.86,
+    "verify_s": 1.04,
+    "total_s": 105.13
+   },
+   "env": {
+    "accelerate": "1.12.0",
+    "numpy": "2.5.4",
+    "onnxruntime": "1.31.0",
+    "qwen-tts": "0.1.1",
+    "torch": "2.8.0+cu128",
+    "torchaudio": "2.8.0+cu128",
+    "transformers": "4.57.3",
+    "freeze_sha": "e48ffabc264aaeb7",
+    "python": "3.12.13"
+   },
+   "device": [
+    {
+     "index": 1,
+     "name": "NVIDIA GeForce RTX 4080",
+     "uuid": "GPU-a044d760-4878-72e4-181c-4dd409e8146b"
+    }
+   ],
+   "parts": [
+    {
+     "i": 0,
+     "dur": 4.64,
+     "attempts": 1,
+     "basic": "ok",
+     "lead_low_s": 0.0,
+     "match": 0.9744,
+     "heard": "이해되는 AI의 1편 LLM의 어텐션이란?",
+     "verify_model": "fw-large-v3"
+    },
+    {
+     "i": 1,
+     "dur": 4.56,
+     "attempts": 1,
+     "basic": "ok",
+     "lead_low_s": 0.0,
+     "match": 0.9583,
+     "heard": "똑같이 밥이 들어가는데 하나는 걱정이고 하나는 빈잔이죠.",
+     "verify_model": "fw-large-v3"
+    }
+   ]
+  },
+  {
+   "model": "qwen3-tts-0.6b-base",
+   "status": "done",
+   "error": "",
+   "devices": [
+    1
+   ],
+   "wall_s": 81.6,
+   "log_tail": [],
+   "generation_id": "20261102-142826-9cb5f6",
+   "result_status": "ok",
+   "duration": 9.78,
+   "timings": {
+    "wait_load_s": 57.15,
+    "gen_s": 19.28,
+    "verify_s": 1.24,
+    "total_s": 79.31
+   },
+   "env": {
+    "accelerate": "1.12.0",
+    "numpy": "2.5.4",
+    "onnxruntime": "1.31.0",
+    "qwen-tts": "0.1.1",
+    "torch": "2.8.0+cu128",
+    "torchaudio": "2.8.0+cu128",
+    "transformers": "4.57.3",
+    "freeze_sha": "e48ffabc264aaeb7",
+    "python": "3.12.13"
+   },
+   "device": [
+    {
+     "index": 1,
+     "name": "NVIDIA GeForce RTX 4080",
+     "uuid": "GPU-a044d760-4878-72e4-181c-4dd409e8146b"
+    }
+   ],
+   "parts": [
+    {
+     "i": 0,
+     "dur": 4.96,
+     "attempts": 1,
+     "basic": "ok",
+     "lead_low_s": 0.0,
+     "match": 0.9,
+     "heard": "소위 이해되는 AI 1편 LLM의 어텐션이라",
+     "verify_model": "fw-large-v3"
+    },
+    {
+     "i": 1,
+     "dur": 4.4,
+     "attempts": 1,
+     "basic": "ok",
+     "lead_low_s": 0.0,
+     "match": 0.9583,
+     "heard": "똑같이 밥이 들어가는데 하나는 걱정이고 하나는 빈잔이죠.",
+     "verify_model": "fw-large-v3"
+    }
+   ]
+  },
+  {
+   "model": "moss-tts-local-v1.5",
+   "status": "done",
+   "error": "",
+   "devices": [
+    1
+   ],
+   "wall_s": 491.8,
+   "log_tail": [],
+   "generation_id": "20261102-142947-244376",
+   "result_status": "ok",
+   "duration": 10.874,
+   "timings": {
+    "wait_load_s": 429.56,
+    "gen_s": 16.99,
+    "verify_s": 43.1,
+    "total_s": 491.65
+   },
+   "env": {
+    "accelerate": "1.15.0",
+    "numpy": "2.1.0",
+    "torch": "2.9.1+cu128",
+    "torchaudio": "2.9.1+cu128",
+    "transformers": "5.0.0",
+    "freeze_sha": "bb9d5fddf395bbcb",
+    "python": "3.12.13"
+   },
+   "device": [
+    {
+     "index": 1,
+     "name": "NVIDIA GeForce RTX 4080",
+     "uuid": "GPU-a044d760-4878-72e4-181c-4dd409e8146b"
+    }
+   ],
+   "parts": [
+    {
+     "i": 0,
+     "dur": 4.8,
+     "attempts": 1,
+     "basic": "ok",
+     "lead_low_s": 0.0,
+     "match": 1.0,
+     "heard": "이해되는 AI 1편 LLM의 어텐션이란",
+     "verify_model": "fw-large-v3"
+    },
+    {
+     "i": 1,
+     "dur": 5.52,
+     "attempts": 1,
+     "basic": "ok",
+     "lead_low_s": 0.0,
+     "match": 1.0,
+     "heard": "똑같이 밥이 들어가는데 하나는 걱정이고 하나는 핀잔이죠.",
+     "verify_model": "fw-large-v3"
+    }
+   ]
+  },
+  {
+   "model": "moss-tts-v1.5-8b",
+   "status": "done",
+   "error": "",
+   "devices": [
+    1
+   ],
+   "wall_s": 458.8,
+   "log_tail": [],
+   "generation_id": "20261102-143759-3907ef",
+   "result_status": "ok",
+   "duration": 13.202,
+   "timings": {
+    "wait_load_s": 268.73,
+    "gen_s": 182.88,
+    "verify_s": 1.24,
+    "total_s": 455.96
+   },
+   "env": {
+    "accelerate": "1.15.0",
+    "numpy": "2.1.0",
+    "torch": "2.9.1+cu128",
+    "torchaudio": "2.9.1+cu128",
+    "transformers": "5.0.0",
+    "freeze_sha": "bb9d5fddf395bbcb",
+    "python": "3.12.13"
+   },
+   "device": [
+    {
+     "index": 1,
+     "name": "NVIDIA GeForce RTX 4080",
+     "uuid": "GPU-a044d760-4878-72e4-181c-4dd409e8146b"
+    },
+    {
+     "index": 0,
+     "name": "NVIDIA GeForce RTX 4080",
+     "uuid": "GPU-a51f23d1-b454-3d01-8187-5550eef890c2"
+    }
+   ],
+   "parts": [
+    {
+     "i": 0,
+     "dur": 7.36,
+     "attempts": 1,
+     "basic": "ok",
+     "lead_low_s": 0.0,
+     "match": 1.0,
+     "heard": "이해되는 AI 1편 LLM의 어텐션이란?",
+     "verify_model": "fw-large-v3"
+    },
+    {
+     "i": 1,
+     "dur": 5.36,
+     "attempts": 1,
+     "basic": "ok",
+     "lead_low_s": 0.0,
+     "match": 1.0,
+     "heard": "똑같이 밥이 들어가는데 하나는 걱정이고 하나는 핀잔이죠.",
+     "verify_model": "fw-large-v3"
+    }
+   ]
+  },
+  {
+   "model": "higgs-v3-4b-tf",
+   "status": "done",
+   "error": "",
+   "devices": [
+    1
+   ],
+   "wall_s": 193.3,
+   "log_tail": [],
+   "generation_id": "20261102-144538-bb2573",
+   "result_status": "ok",
+   "duration": 9.685,
+   "timings": {
+    "wait_load_s": 155.59,
+    "gen_s": 33.28,
+    "verify_s": 1.1,
+    "total_s": 191.85
+   },
+   "env": {
+    "accelerate": "1.15.0",
+    "numpy": "2.5.4",
+    "torch": "2.9.1+cu128",
+    "torchaudio": "2.9.1+cu128",
+    "transformers": "5.22.1",
+    "freeze_sha": "8d5c0377bbe6baa4",
+    "python": "3.12.13"
+   },
+   "device": [
+    {
+     "index": 1,
+     "name": "NVIDIA GeForce RTX 4080",
+     "uuid": "GPU-a044d760-4878-72e4-181c-4dd409e8146b"
+    }
+   ],
+   "parts": [
+    {
+     "i": 0,
+     "dur": 4.68,
+     "attempts": 1,
+     "basic": "ok",
+     "lead_low_s": 0.0,
+     "match": 1.0,
+     "heard": "이해되는 AI 1편 LLM의 어텐션이란?",
+     "verify_model": "fw-large-v3"
+    },
+    {
+     "i": 1,
+     "dur": 5.16,
+     "attempts": 1,
+     "basic": "ok",
+     "lead_low_s": 0.0,
+     "match": 1.0,
+     "heard": "똑같이 밥이 들어가는데 하나는 걱정이고 하나는 핀잔이죠.",
+     "verify_model": "fw-large-v3"
+    }
+   ]
+  },
+  {
+   "model": "omnivoice",
+   "status": "done",
+   "error": "",
+   "devices": [
+    1
+   ],
+   "wall_s": 72.5,
+   "log_tail": [],
+   "generation_id": "20261102-144851-5f9d3e",
+   "result_status": "warn",
+   "duration": 8.162,
+   "timings": {
+    "wait_load_s": 54.57,
+    "gen_s": 10.51,
+    "verify_s": 2.2,
+    "total_s": 69.94
+   },
+   "env": {
+    "accelerate": "1.15.0",
+    "numpy": "2.4.6",
+    "omnivoice": "0.2.1",
+    "torch": "2.8.0+cu128",
+    "torchaudio": "2.8.0+cu128",
+    "transformers": "5.22.1",
+    "freeze_sha": "1e2e168254962a7d",
+    "python": "3.11.15"
+   },
+   "device": [
+    {
+     "index": 1,
+     "name": "NVIDIA GeForce RTX 4080",
+     "uuid": "GPU-a044d760-4878-72e4-181c-4dd409e8146b"
+    }
+   ],
+   "parts": [
+    {
+     "i": 0,
+     "dur": 3.59,
+     "attempts": 3,
+     "basic": "ok",
+     "lead_low_s": 0.0,
+     "match": 0.8421,
+     "heard": "이해되는 AI 1편 LLM의 오뎅션이라",
+     "verify_model": "fw-large-v3",
+     "failed": true
+    },
+    {
+     "i": 1,
+     "dur": 4.42,
+     "attempts": 1,
+     "basic": "ok",
+     "lead_low_s": 0.0,
+     "match": 0.9583,
+     "heard": "똑같이 밥이 들어가는데 하나는 걱정이고 하나는 빈잔이죠.",
+     "verify_model": "fw-large-v3"
+    }
+   ]
+  },
+  {
+   "model": "chatterbox-mtl-v3",
+   "status": "done",
+   "error": "",
+   "devices": [
+    1
+   ],
+   "wall_s": 244.6,
+   "log_tail": [],
+   "generation_id": "20261102-145004-9ea398",
+   "result_status": "warn",
+   "duration": 34.979,
+   "timings": {
+    "wait_load_s": 113.37,
+    "gen_s": 126.9,
+    "verify_s": 1.38,
+    "total_s": 243.48
+   },
+   "env": {
+    "chatterbox-tts": "git+https://github.com/resemble-ai/chatterbox.git@5de7a54aa4e5e2baadb0182dde554908b48b85c2",
+    "numpy": "1.26.4",
+    "torch": "2.6.0+cu126",
+    "torchaudio": "2.6.0+cu126",
+    "transformers": "5.2.0",
+    "freeze_sha": "4381f9c3ff968cca",
+    "python": "3.11.15"
+   },
+   "device": [
+    {
+     "index": 1,
+     "name": "NVIDIA GeForce RTX 4080",
+     "uuid": "GPU-a044d760-4878-72e4-181c-4dd409e8146b"
+    }
+   ],
+   "parts": [
+    {
+     "i": 0,
+     "dur": 27.32,
+     "attempts": 3,
+     "basic": "길이 이상 27.3s/19자",
+     "lead_low_s": 0.0,
+     "match": 0.8421,
+     "heard": "이에 대한 AI 1편 LLM의 어텐션이란?",
+     "verify_model": "fw-large-v3",
+     "failed": true
+    },
+    {
+     "i": 1,
+     "dur": 7.72,
+     "attempts": 2,
+     "basic": "ok",
+     "failed": false,
+     "lead_low_s": 0.0,
+     "match": 1.0,
+     "heard": "똑같이 밥이 들어가는데 하나는 걱정이고 하나는 핀잔이죠.",
+     "verify_model": "fw-large-v3"
+    }
+   ]
+  },
+  {
+   "model": "cosyvoice3-0.5b",
+   "status": "done",
+   "error": "",
+   "devices": [
+    1
+   ],
+   "wall_s": 281.3,
+   "log_tail": [],
+   "generation_id": "20261102-145408-5b17fd",
+   "result_status": "ok",
+   "duration": 11.68,
+   "timings": {
+    "wait_load_s": 237.71,
+    "gen_s": 36.32,
+    "verify_s": 3.04,
+    "total_s": 280.17
+   },
+   "env": {
+    "numpy": "1.26.4",
+    "onnxruntime": "1.18.0",
+    "torch": "2.3.1+cu121",
+    "torchaudio": "2.3.1+cu121",
+    "transformers": "4.51.3",
+    "freeze_sha": "1a520b1bb506a6b5",
+    "python": "3.10.20"
+   },
+   "device": [
+    {
+     "index": 1,
+     "name": "NVIDIA GeForce RTX 4080",
+     "uuid": "GPU-a044d760-4878-72e4-181c-4dd409e8146b"
+    }
+   ],
+   "parts": [
+    {
+     "i": 0,
+     "dur": 5.12,
+     "attempts": 2,
+     "basic": "ok",
+     "lead_low_s": 0.0,
+     "match": 1.0,
+     "heard": "이해되는 AI 1편 LLM의 어텐션이란?",
+     "verify_model": "fw-large-v3",
+     "failed": false
+    },
+    {
+     "i": 1,
+     "dur": 6.24,
+     "attempts": 2,
+     "basic": "ok",
+     "lead_low_s": 0.0,
+     "match": 0.9583,
+     "heard": "똑같이 밥이 들어가는데 하나는 걱정이고 하나는 빈잔이죠.",
+     "verify_model": "fw-large-v3",
+     "failed": false
+    }
+   ]
+  },
+  {
+   "model": "fish-s2-pro",
+   "status": "done",
+   "error": "",
+   "devices": [
+    1
+   ],
+   "wall_s": 474.0,
+   "log_tail": [],
+   "generation_id": "20261102-145850-f6ec0d",
+   "result_status": "ok",
+   "duration": 9.052,
+   "timings": {
+    "wait_load_s": 371.92,
+    "gen_s": 53.13,
+    "verify_s": 45.3,
+    "total_s": 472.19
+   },
+   "env": {
+    "numpy": "2.5.4",
+    "torch": "2.8.0+cu128",
+    "torchaudio": "2.8.0+cu128",
+    "transformers": "5.19.0",
+    "freeze_sha": "93d1b0103ac871d3",
+    "python": "3.12.13"
+   },
+   "device": [
+    {
+     "index": 1,
+     "name": "NVIDIA GeForce RTX 4080",
+     "uuid": "GPU-a044d760-4878-72e4-181c-4dd409e8146b"
+    }
+   ],
+   "parts": [
+    {
+     "i": 0,
+     "dur": 4.365,
+     "attempts": 1,
+     "basic": "ok",
+     "lead_low_s": 0.0,
+     "match": 1.0,
+     "heard": "이해되는 AI 1편 LLM의 어텐션이란?",
+     "verify_model": "fw-large-v3"
+    },
+    {
+     "i": 1,
+     "dur": 4.087,
+     "attempts": 1,
+     "basic": "ok",
+     "lead_low_s": 0.0,
+     "match": 0.9583,
+     "heard": "똑같이 밥이 들어가는데 하나는 걱정이고 하나는 빈잔이죠.",
+     "verify_model": "fw-large-v3"
+    }
+   ]
+  },
+  {
+   "model": "drama-3-q4k",
+   "status": "done",
+   "error": "",
+   "devices": [
+    1
+   ],
+   "wall_s": 347.5,
+   "log_tail": [],
+   "generation_id": "20261102-150644-e3ee56",
+   "result_status": "ok",
+   "duration": 11.97,
+   "timings": {
+    "wait_load_s": 1.13,
+    "gen_s": 302.81,
+    "verify_s": 39.65,
+    "total_s": 345.26
+   },
+   "env": {
+    "numpy": "2.2.6",
+    "freeze_sha": "1ff12f9cfd5db5b2",
+    "python": "3.12.13"
+   },
+   "device": [
+    {
+     "index": 1,
+     "name": "NVIDIA GeForce RTX 4080",
+     "uuid": "GPU-a044d760-4878-72e4-181c-4dd409e8146b"
+    }
+   ],
+   "parts": [
+    {
+     "i": 0,
+     "dur": 7.663,
+     "attempts": 1,
+     "basic": "ok",
+     "lead_low_s": 0.0,
+     "match": 0.8947,
+     "heard": "이해되는 AI 1평 LLM의 어텐션이라",
+     "verify_model": "fw-large-v3"
+    },
+    {
+     "i": 1,
+     "dur": 4.412,
+     "attempts": 1,
+     "basic": "ok",
+     "lead_low_s": 0.0,
+     "match": 0.9583,
+     "heard": "똑같이 밥이 들어가는데 하나는 걱정이고 하나는 빈잔이죠.",
+     "verify_model": "fw-large-v3"
+    }
+   ]
+  },
+  {
+   "model": "xvoice-stage1",
+   "status": "done",
+   "error": "",
+   "devices": [
+    1
+   ],
+   "wall_s": 250.6,
+   "log_tail": [],
+   "generation_id": "20261102-151231-713f37",
+   "result_status": "ok",
+   "duration": 8.215,
+   "timings": {
+    "wait_load_s": 201.21,
+    "gen_s": 42.44,
+    "verify_s": 1.49,
+    "total_s": 247.7
+   },
+   "env": {
+    "accelerate": "1.15.0",
+    "numpy": "1.26.4",
+    "torch": "2.8.0+cu128",
+    "torchaudio": "2.8.0+cu128",
+    "transformers": "4.48.3",
+    "freeze_sha": "302bc178f019611e",
+    "python": "3.11.15"
+   },
+   "device": [
+    {
+     "index": 0,
+     "name": "NVIDIA GeForce RTX 4080",
+     "uuid": "GPU-a51f23d1-b454-3d01-8187-5550eef890c2"
+    }
+   ],
+   "parts": [
+    {
+     "i": 0,
+     "dur": 3.616,
+     "attempts": 2,
+     "basic": "ok",
+     "lead_low_s": 0.0,
+     "failed": false,
+     "match": 0.8649,
+     "heard": "이해되는 A1편 ELLM의 어텐션이란",
+     "verify_model": "fw-large-v3"
+    },
+    {
+     "i": 1,
+     "dur": 4.277,
+     "attempts": 1,
+     "basic": "ok",
+     "lead_low_s": 0.0,
+     "match": 0.9583,
+     "heard": "똑같이 밥이 들어가는데 하나는 걱정이고 하나는 빈잔이죠.",
+     "verify_model": "fw-large-v3"
+    }
+   ]
+  }
+ ],
+ "asr": [],
+ "finished": "2026-11-02 15:16:41"
+}

@@ -1,0 +1,440 @@
+{
+ "started": "2026-11-02 15:16:54",
+ "base": "http://192.168.0.29:8765",
+ "ref": "20261102-142445-b1756b",
+ "upload": "20261102-142444-89de87",
+ "seed": 2026,
+ "verify": false,
+ "text": "이해되는 에이아이, 1편. 엘엘엠의 어텐션이란?\n\n똑같이 밥이 들어가는데, 하나는 걱정이고 하나는 핀잔이죠.",
+ "settings": {
+  "model_root": "N:\\models",
+  "model_paths": {},
+  "gpu_mode": "auto",
+  "allowed_gpus": null,
+  "vram_reserve_gb": 1.0,
+  "avoid_foreign_gpu": true,
+  "foreign_vram_gb": 2.0,
+  "temp_limit_c": 87,
+  "allow_cpu": true,
+  "cpu_threads": 0,
+  "idle_unload_min": 20,
+  "max_resident": 3,
+  "hf_endpoint": "",
+  "show_test_engines": false,
+  "default_tts_model": "qwen3-tts-1.7b-base",
+  "default_asr_model": "fw-large-v3"
+ },
+ "gpus": [
+  {
+   "index": 0,
+   "name": "NVIDIA GeForce RTX 4080",
+   "uuid": "GPU-a51f23d1-b454-3d01-8187-5550eef890c2",
+   "allowed": true,
+   "blocked": []
+  },
+  {
+   "index": 1,
+   "name": "NVIDIA GeForce RTX 4080",
+   "uuid": "GPU-a044d760-4878-72e4-181c-4dd409e8146b",
+   "allowed": true,
+   "blocked": [
+    "다른 프로그램 사용 3.7 GB"
+   ]
+  }
+ ],
+ "service": {
+  "version": "0.1.0",
+  "git": "92b960c",
+  "dirty": false
+ },
+ "tts": [],
+ "asr": [
+  {
+   "model": "fw-large-v3",
+   "status": "done",
+   "error": "",
+   "devices": [
+    1
+   ],
+   "wall_s": 6.1,
+   "transcript_id": "20261102-151658-29bbfe",
+   "language": "ja",
+   "segments": 9,
+   "timings": {
+    "infer_s": 2.98,
+    "total_s": 3.08
+   },
+   "words": 99,
+   "env": {
+    "ctranslate2": "4.8.4",
+    "faster-whisper": "1.2.1",
+    "numpy": "2.2.6",
+    "onnxruntime": "1.31.1",
+    "freeze_sha": "5635e860761991c7",
+    "python": "3.12.13"
+   },
+   "first": [
+    [
+     0.14,
+     2.76,
+     "近頃のレイドは可愛げがないのよ"
+    ],
+    [
+     3.7,
+     6.98,
+     "G4の思惑に翻弄される市民には同情するけど"
+    ],
+    [
+     8.08,
+     8.7,
+     "だからって"
+    ]
+   ]
+  },
+  {
+   "model": "fw-large-v3-turbo",
+   "status": "done",
+   "error": "",
+   "devices": [
+    0
+   ],
+   "wall_s": 27.2,
+   "transcript_id": "20261102-151727-cf10fd",
+   "language": "ja",
+   "segments": 10,
+   "timings": {
+    "infer_s": 2.03,
+    "total_s": 25.84
+   },
+   "words": 99,
+   "env": {
+    "ctranslate2": "4.8.4",
+    "faster-whisper": "1.2.1",
+    "numpy": "2.2.6",
+    "onnxruntime": "1.31.1",
+    "freeze_sha": "5635e860761991c7",
+    "python": "3.12.13"
+   },
+   "first": [
+    [
+     0.14,
+     2.9,
+     "近頃のレイドは可愛げがないのよ"
+    ],
+    [
+     3.82,
+     7.12,
+     "G4の思惑に翻弄される市民には同情するけど"
+    ],
+    [
+     8.2,
+     8.84,
+     "だからって"
+    ]
+   ]
+  },
+  {
+   "model": "fw-medium",
+   "status": "done",
+   "error": "",
+   "devices": [
+    0
+   ],
+   "wall_s": 30.3,
+   "transcript_id": "20261102-151756-3fd081",
+   "language": "ja",
+   "segments": 8,
+   "timings": {
+    "infer_s": 2.71,
+    "total_s": 27.59
+   },
+   "words": 100,
+   "env": {
+    "ctranslate2": "4.8.4",
+    "faster-whisper": "1.2.1",
+    "numpy": "2.2.6",
+    "onnxruntime": "1.31.1",
+    "freeze_sha": "5635e860761991c7",
+    "python": "3.12.13"
+   },
+   "first": [
+    [
+     0.14,
+     3.14,
+     "近頃のレイドはかわいげがないのよ"
+    ],
+    [
+     3.94,
+     7.14,
+     "G4の思惑に翻弄される市民には 同情するけど"
+    ],
+    [
+     8.74,
+     9.46,
+     "だからって"
+    ]
+   ]
+  },
+  {
+   "model": "whisper-large-v3",
+   "status": "done",
+   "error": "",
+   "devices": [
+    0
+   ],
+   "wall_s": 138.9,
+   "transcript_id": "20261102-152015-702159",
+   "language": "ja",
+   "segments": 3,
+   "timings": {
+    "infer_s": 7.68,
+    "total_s": 137.19
+   },
+   "words": 0,
+   "env": {
+    "accelerate": "1.12.0",
+    "numpy": "2.5.4",
+    "torch": "2.8.0+cu128",
+    "torchaudio": "2.8.0+cu128",
+    "transformers": "4.57.3",
+    "freeze_sha": "4f7469947ab3da5c",
+    "python": "3.12.13"
+   },
+   "first": [
+    [
+     0.0,
+     8.0,
+     "近頃のレイドは可愛げがないのよ G4の思惑に翻弄される市民には同情するけど"
+    ],
+    [
+     8.0,
+     16.44,
+     "だからって 命を落としてまで襲奪行為に参加するのは ただの自殺志願者と変わらない"
+    ],
+    [
+     16.44,
+     25.44,
+     "プロ同士なら戦争ごっこもサスティナブルだけど 相打ち覚悟の素人に傭兵家業は見合わないわ"
+    ]
+   ]
+  },
+  {
+   "model": "whisper-large-v3-turbo",
+   "status": "done",
+   "error": "",
+   "devices": [
+    1
+   ],
+   "wall_s": 51.3,
+   "transcript_id": "20261102-152106-0c7d51",
+   "language": "ja",
+   "segments": 3,
+   "timings": {
+    "infer_s": 2.7,
+    "total_s": 49.36
+   },
+   "words": 0,
+   "env": {
+    "accelerate": "1.12.0",
+    "numpy": "2.5.4",
+    "torch": "2.8.0+cu128",
+    "torchaudio": "2.8.0+cu128",
+    "transformers": "4.57.3",
+    "freeze_sha": "4f7469947ab3da5c",
+    "python": "3.12.13"
+   },
+   "first": [
+    [
+     0.0,
+     8.0,
+     "近頃のレイドは可愛げがないのよ G4の思惑に翻弄される市民には同情するけど"
+    ],
+    [
+     8.0,
+     16.4,
+     "だからって 命を落としてまで収奪行為に参加するのはただの自殺志願者と変わらない"
+    ],
+    [
+     16.4,
+     25.42,
+     "プロ同士なら戦争ごっこもサスティナブルだけど 相打ち覚悟の素人に傭兵家業は見合わないわ"
+    ]
+   ]
+  },
+  {
+   "model": "qwen3-asr-1.7b",
+   "status": "done",
+   "error": "",
+   "devices": [
+    1
+   ],
+   "wall_s": 132.7,
+   "transcript_id": "20261102-152319-0794b6",
+   "language": "ja",
+   "segments": 6,
+   "timings": {
+    "infer_s": 15.54,
+    "total_s": 130.76
+   },
+   "words": 67,
+   "env": {
+    "accelerate": "1.12.0",
+    "numpy": "2.5.4",
+    "qwen-asr": "0.0.6",
+    "torch": "2.8.0+cu128",
+    "torchaudio": "2.8.0+cu128",
+    "transformers": "4.57.6",
+    "freeze_sha": "8e546fd40a086110",
+    "python": "3.12.13"
+   },
+   "first": [
+    [
+     0.48,
+     2.8,
+     "近頃のレイドは可愛げがないのよ"
+    ],
+    [
+     4.0,
+     7.12,
+     "G4の思惑に翻弄される市民には同情するけど"
+    ],
+    [
+     8.16,
+     15.36,
+     "だからって命を落としてまで集団殺意に参加するのはただの自殺志願者と変わらない"
+    ]
+   ]
+  },
+  {
+   "model": "qwen3-asr-0.6b",
+   "status": "done",
+   "error": "",
+   "devices": [
+    1
+   ],
+   "wall_s": 87.7,
+   "transcript_id": "20261102-152448-7c158e",
+   "language": "ja",
+   "segments": 6,
+   "timings": {
+    "infer_s": 10.29,
+    "total_s": 86.79
+   },
+   "words": 66,
+   "env": {
+    "accelerate": "1.12.0",
+    "numpy": "2.5.4",
+    "qwen-asr": "0.0.6",
+    "torch": "2.8.0+cu128",
+    "torchaudio": "2.8.0+cu128",
+    "transformers": "4.57.6",
+    "freeze_sha": "8e546fd40a086110",
+    "python": "3.12.13"
+   },
+   "first": [
+    [
+     0.48,
+     2.8,
+     "近頃のレードは可愛がないのよ"
+    ],
+    [
+     4.0,
+     7.12,
+     "G四の思惑に翻弄される市民には同情するけど"
+    ],
+    [
+     8.24,
+     15.36,
+     "だからって命を落としてまで集団行為に参加するのはただの自殺志向者と変わらない"
+    ]
+   ]
+  },
+  {
+   "model": "sensevoice-small",
+   "status": "done",
+   "error": "",
+   "devices": [
+    1
+   ],
+   "wall_s": 42.4,
+   "transcript_id": "20261102-152530-459b45",
+   "language": "ja",
+   "segments": 3,
+   "timings": {
+    "infer_s": 0.92,
+    "total_s": 42.35
+   },
+   "words": 0,
+   "env": {
+    "funasr": "1.4.19",
+    "numpy": "2.4.6",
+    "torch": "2.8.0+cu128",
+    "torchaudio": "2.8.0+cu128",
+    "transformers": "5.22.1",
+    "freeze_sha": "bcc3f269626424c2",
+    "python": "3.11.15"
+   },
+   "first": [
+    [
+     0.0,
+     10.01,
+     "近頃の レイドは 可愛げがないのよ ジーフーの 思惑に 翻弄 される 市民には 同情するけど だからって いの。"
+    ],
+    [
+     10.01,
+     20.02,
+     "地 を 落 と して まで 集奪 行為 に 参加 する の は、ただ の 自殺 志願 者 と 変わら ない 風ロ 同士 なら 清争 ごっこ も サスティナブル だ けど。"
+    ],
+    [
+     20.13,
+     25.41,
+     "相打ち覚悟 の素人に 傭兵影 は 見合わ な いわ。"
+    ]
+   ]
+  },
+  {
+   "model": "nemotron-3.5-asr-0.6b",
+   "status": "done",
+   "error": "",
+   "devices": [
+    1
+   ],
+   "wall_s": 102.8,
+   "transcript_id": "20261102-152712-e82d89",
+   "language": "ja",
+   "segments": 8,
+   "timings": {
+    "infer_s": 1.94,
+    "total_s": 100.34
+   },
+   "words": 0,
+   "env": {
+    "accelerate": "1.15.0",
+    "numpy": "2.5.4",
+    "torch": "2.9.1+cu128",
+    "torchaudio": "2.9.1+cu128",
+    "transformers": "5.22.1",
+    "freeze_sha": "f917edd7362da049",
+    "python": "3.12.13"
+   },
+   "first": [
+    [
+     0.42,
+     3.02,
+     "シカゴロのレイドは川がないのよ。"
+    ],
+    [
+     3.86,
+     7.36,
+     "gの思惑に本浪される市民には同情するけど"
+    ],
+    [
+     8.12,
+     9.06,
+     "だからって"
+    ]
+   ]
+  }
+ ],
+ "finished": "2026-11-02 15:27:14"
+}
