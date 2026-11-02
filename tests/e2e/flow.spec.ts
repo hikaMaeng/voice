@@ -57,8 +57,11 @@ test("설정: 쓸 GPU 를 웹에서 고른다(하드코딩 아님)", async ({ pa
   await page.goto("/#/settings");
   const all = page.getByTestId("settings-all-gpus");
   await expect(page.getByTestId("gpu-row")).toHaveCount(sys.gpus.length);
-  if (!(await all.isChecked())) await all.check();
-  await page.getByRole("button", { name: "설정 저장" }).click();
+  const save = page.getByRole("button", { name: "설정 저장" });   // 바뀐 게 없으면 비활성이다
+  if (!(await all.isChecked())) {
+    await all.check();
+    await save.click();
+  }
   await expect.poll(async () => (await (await request.get(API("/api/settings"))).json()).allowed_gpus).toBeNull();
   // 「전부」를 끄고 첫 카드(가장 큰 메모리 카드)만 남긴다
   const keep = [...sys.gpus].sort((a: any, b: any) => b.total_gb - a.total_gb)[0];

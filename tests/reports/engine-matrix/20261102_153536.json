@@ -1,0 +1,186 @@
+{
+ "started": "2026-11-02 15:29:31",
+ "base": "http://192.168.0.29:8765",
+ "ref": "20261102-142445-b1756b",
+ "upload": "20261102-142444-89de87",
+ "seed": 2026,
+ "verify": false,
+ "text": "이해되는 에이아이, 1편. 엘엘엠의 어텐션이란?\n\n똑같이 밥이 들어가는데, 하나는 걱정이고 하나는 핀잔이죠.",
+ "settings": {
+  "model_root": "N:\\models",
+  "model_paths": {},
+  "gpu_mode": "auto",
+  "allowed_gpus": null,
+  "vram_reserve_gb": 1.0,
+  "avoid_foreign_gpu": true,
+  "foreign_vram_gb": 2.0,
+  "temp_limit_c": 87,
+  "allow_cpu": true,
+  "cpu_threads": 0,
+  "idle_unload_min": 20,
+  "max_resident": 3,
+  "hf_endpoint": "",
+  "show_test_engines": false,
+  "default_tts_model": "qwen3-tts-1.7b-base",
+  "default_asr_model": "fw-large-v3"
+ },
+ "gpus": [
+  {
+   "index": 0,
+   "name": "NVIDIA GeForce RTX 4080",
+   "uuid": "GPU-a51f23d1-b454-3d01-8187-5550eef890c2",
+   "allowed": true,
+   "blocked": []
+  },
+  {
+   "index": 1,
+   "name": "NVIDIA GeForce RTX 4080",
+   "uuid": "GPU-a044d760-4878-72e4-181c-4dd409e8146b",
+   "allowed": true,
+   "blocked": []
+  }
+ ],
+ "service": {
+  "version": "0.1.0",
+  "git": "bcc9b01",
+  "dirty": false
+ },
+ "tts": [
+  {
+   "model": "drama-3-q4k",
+   "status": "done",
+   "error": "",
+   "devices": [
+    1
+   ],
+   "wall_s": 274.8,
+   "log_tail": [],
+   "generation_id": "20261102-152931-854ae9",
+   "result_status": "ok",
+   "duration": 11.007,
+   "timings": {
+    "wait_load_s": 0.7,
+    "gen_s": 264.34,
+    "verify_s": 0.0,
+    "total_s": 272.91
+   },
+   "env": {
+    "numpy": "2.2.6",
+    "freeze_sha": "1ff12f9cfd5db5b2",
+    "python": "3.12.13"
+   },
+   "device": [
+    {
+     "index": 1,
+     "name": "NVIDIA GeForce RTX 4080",
+     "uuid": "GPU-a044d760-4878-72e4-181c-4dd409e8146b"
+    }
+   ],
+   "parts": [
+    {
+     "i": 0,
+     "dur": 6.78,
+     "attempts": 1,
+     "basic": "ok",
+     "lead_low_s": 0.0
+    },
+    {
+     "i": 1,
+     "dur": 4.412,
+     "attempts": 1,
+     "basic": "ok",
+     "lead_low_s": 0.0
+    }
+   ]
+  }
+ ],
+ "asr": [
+  {
+   "model": "whisper-large-v3-turbo",
+   "status": "done",
+   "error": "",
+   "devices": [
+    1
+   ],
+   "wall_s": 48.3,
+   "transcript_id": "20261102-153452-d9f5fd",
+   "language": "ja",
+   "segments": 3,
+   "timings": {
+    "infer_s": 2.56,
+    "total_s": 46.61
+   },
+   "words": 0,
+   "env": {
+    "accelerate": "1.12.0",
+    "numpy": "2.5.4",
+    "torch": "2.8.0+cu128",
+    "torchaudio": "2.8.0+cu128",
+    "transformers": "4.57.3",
+    "freeze_sha": "4f7469947ab3da5c",
+    "python": "3.12.13"
+   },
+   "first": [
+    [
+     0.0,
+     8.0,
+     "近頃のレイドは可愛げがないのよ G4の思惑に翻弄される市民には同情するけど"
+    ],
+    [
+     8.0,
+     16.4,
+     "だからって 命を落としてまで収奪行為に参加するのはただの自殺志願者と変わらない"
+    ],
+    [
+     16.4,
+     25.42,
+     "プロ同士なら戦争ごっこもサスティナブルだけど 相打ち覚悟の素人に傭兵家業は見合わないわ"
+    ]
+   ]
+  },
+  {
+   "model": "sensevoice-small",
+   "status": "done",
+   "error": "",
+   "devices": [
+    0
+   ],
+   "wall_s": 42.3,
+   "transcript_id": "20261102-153533-d4ec99",
+   "language": "ja",
+   "segments": 8,
+   "timings": {
+    "infer_s": 1.43,
+    "total_s": 39.42
+   },
+   "words": 0,
+   "env": {
+    "funasr": "1.4.19",
+    "numpy": "2.4.6",
+    "torch": "2.8.0+cu128",
+    "torchaudio": "2.8.0+cu128",
+    "transformers": "5.22.1",
+    "freeze_sha": "bcc3f269626424c2",
+    "python": "3.11.15"
+   },
+   "first": [
+    [
+     0.42,
+     3.02,
+     "近頃のレドは可愛げがないのよ。"
+    ],
+    [
+     3.86,
+     7.36,
+     "ジーフォーの思惑に翻弄される市民には同情するけど。"
+    ],
+    [
+     8.12,
+     9.06,
+     "だからって。"
+    ]
+   ]
+  }
+ ],
+ "finished": "2026-11-02 15:35:36"
+}
