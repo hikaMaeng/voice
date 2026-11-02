@@ -1,0 +1,24 @@
+{
+  "name": "voice",
+  "version": "0.1.0",
+  "private": true,
+  "description": "로컬 설치형 TTS·ASR 웹 서비스",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "setup": "node scripts/voice.mjs setup",
+    "build": "node scripts/voice.mjs build",
+    "start": "node scripts/voice.mjs start",
+    "deploy": "node scripts/voice.mjs deploy",
+    "stop": "node scripts/voice.mjs stop",
+    "status": "node scripts/voice.mjs status",
+    "dev:web": "npm --prefix web run dev",
+    "test:unit": "uv run --frozen pytest -q",
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.55.1"
+  }
+}

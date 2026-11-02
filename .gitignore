@@ -1,0 +1,14 @@
+# 실행 데이터(참조 세트·결과물·DB·로그·엔진 환경) — 저장소에 넣지 않는다
+/data/
+/.venv/
+/envs/
+/engines/vendor/
+__pycache__/
+*.pyc
+node_modules/
+/web/dist/
+/test-results/
+/playwright-report/
+/tests/e2e/.artifacts/
+.voice-server.pid
+*.log
