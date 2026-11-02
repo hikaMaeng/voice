@@ -105,19 +105,48 @@ async function stop() {
 
 async function startDetached() {
   fs.mkdirSync(path.join(DATA, "logs"), { recursive: true });
-  const log = fs.openSync(path.join(DATA, "logs", "server.log"), "a");
-  const child = spawn("uv", ["run", "--frozen", "voice-server", "--host", HOST, "--port", PORT], {
-    cwd: ROOT, detached: true, stdio: ["ignore", log, log], shell: false,
-    env: { ...process.env, PYTHONUTF8: "1" }, windowsHide: true,
-  });
-  child.unref();
-  fs.writeFileSync(PIDFILE, String(child.pid));
+  const logPath = path.join(DATA, "logs", "server.log");
+  let pid;
+  if (WIN && process.env.SSH_CONNECTION) {
+    pid = startViaWmi(logPath);
+  } else {
+    const log = fs.openSync(logPath, "a");
+    const child = spawn("uv", ["run", "--frozen", "voice-server", "--host", HOST, "--port", PORT], {
+      cwd: ROOT, detached: true, stdio: ["ignore", log, log], shell: false,
+      env: { ...process.env, PYTHONUTF8: "1" }, windowsHide: true,
+    });
+    child.unref();
+    pid = child.pid;
+  }
+  fs.writeFileSync(PIDFILE, String(pid));
   const h = await health(90_000);
   if (!h) {
-    console.error(`서버가 90초 안에 뜨지 않았다 — ${path.join(DATA, "logs", "server.log")} 를 본다`);
+    console.error(`서버가 90초 안에 뜨지 않았다 — ${logPath} 를 본다`);
     process.exit(1);
   }
-  console.log(`서버 기동 PID ${child.pid} · ${URL_} · 버전 ${h.service.version} (${h.service.git || "커밋 없음"}) · 데이터 ${h.data_dir}`);
+  console.log(`서버 기동 PID ${pid} · ${URL_} · 버전 ${h.service.version} (${h.service.git || "커밋 없음"}) · 데이터 ${h.data_dir}`);
+}
+
+// Windows OpenSSH 는 세션의 프로세스를 job object 로 묶어 세션이 끝나면 함께 죽인다(원격 4080x2 실측: 기동 직후 종료).
+// SSH 로 배포할 때는 WMI(Win32_Process.Create)로 세션 밖에서 띄운다. 그 프로세스는 지금 환경을 물려받지 않으므로
+// uv 절대 경로와 필요한 환경 변수를 명령 줄에 직접 싣는다.
+function startViaWmi(logPath) {
+  const where = spawnSync("where uv", { shell: true, encoding: "utf8" });
+  const uv = (where.stdout || "").split(/\r?\n/).find((l) => l.trim()) || "uv";
+  const keep = ["VOICE_DATA_DIR", "VOICE_ENVS_DIR", "VOICE_TEST_ENGINES", "UV_CACHE_DIR", "UV_PYTHON_INSTALL_DIR", "HF_ENDPOINT", "HF_TOKEN"];
+  const sets = keep.filter((k) => process.env[k]).map((k) => `set "${k}=${process.env[k]}"&& `).join("");
+  const line = `cmd.exe /c "${sets}set "PATH=${path.dirname(uv)};%PATH%"&& set PYTHONUTF8=1&& "${uv.trim()}" run --frozen voice-server --host ${HOST} --port ${PORT} >> "${logPath}" 2>&1"`;
+  const ps = `$r = Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{CommandLine=$env:VOICE_CMD; CurrentDirectory=$env:VOICE_CWD}; if ($r.ReturnValue -ne 0) { exit 1 }; $r.ProcessId`;
+  const r = spawnSync("powershell", ["-NoProfile", "-Command", ps], {
+    encoding: "utf8", env: { ...process.env, VOICE_CMD: line, VOICE_CWD: ROOT },
+  });
+  const pid = Number((r.stdout || "").trim().split(/\s+/).pop());
+  if (r.status !== 0 || !pid) {
+    console.error("WMI 기동 실패: " + (r.stderr || r.stdout));
+    process.exit(1);
+  }
+  console.log("SSH 세션 밖에서 기동(WMI)");
+  return pid;
 }
 
 const cmd = process.argv[2] || "status";
