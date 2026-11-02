@@ -45,7 +45,8 @@ function setup() {
   console.log("uv", need("uv", "https://docs.astral.sh/uv/getting-started/installation/ 로 설치한다"));
   run("uv", ["sync", "--frozen"]);
   const web = path.join(ROOT, "web");
-  run("npm", ["ci", "--no-audit", "--no-fund"], { cwd: web });
+  // NODE_ENV=production·omit=dev 인 기계(원격 4080x2)에서도 빌드 도구(tsc·vite)를 받는다
+  run("npm", ["ci", "--include=dev", "--no-audit", "--no-fund"], { cwd: web });
 }
 
 function build() {
