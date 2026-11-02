@@ -47,3 +47,16 @@ SSH 로 배포하면 서버가 세션과 함께 죽지 않게 `scripts/voice.mjs
 
 저장소를 받아 `npm run deploy` 하고, 엔진 환경은 그 PC 에서 웹으로 새로 설치한다(환경 폴더 복사 금지 — uv 실행기가 만든 기계의 Python 경로를 박아 둔다).
 SSH 로 띄울 때는 `VOICE_HOST=0.0.0.0` 이면 LAN 에서 열 수 있다. 원격 4080x2 이식 기록은 `tests/reports/` 를 본다.
+
+## 명령줄 · 에이전트에서 쓰기
+
+전역 스킬 `voice-service`(`C:\Users\hika0\.claude\skills\voice-service`, 개발 PC)가 이 서비스의 HTTP 클라이언트다 — 표준 라이브러리만 쓰는 `scripts/voice_client.py`.
+
+```bash
+python voice_client.py status
+python voice_client.py tts --ref <세트 id> --text-file script.txt --out out.wav [--model …] [--seed 7] [--verify]
+python voice_client.py asr --audio talk.mp4 --out talk.srt [--model fw-large-v3] [--lang ko]
+python voice_client.py replay <결과 id> --out again.wav
+```
+주소는 `--url` > env `VOICE_URL` > `http://192.168.0.29:8765`. 목소리 사용 근거(`--consent`) 없이는 참조 세트를 만들지 않는다.
+2026-11-02 확인: 스킬로 Qwen 생성(2문단 일치율 1.0) → 스킬 ASR 로 SRT 4구간 → `replay` 결과 wav 가 원본과 sha256 동일(같은 카드).
