@@ -123,3 +123,21 @@ def test_cancel_kills_worker(client):
     assert scheduler.stop_worker(pids[0]) is True
     import psutil
     assert not psutil.pid_exists(pids[0]) or psutil.Process(pids[0]).status() == psutil.STATUS_ZOMBIE
+
+
+def test_tail_noise_and_outliers(tmp_path):
+    sr = 16000
+    speech = (0.3 * np.sin(2 * np.pi * 200 * np.arange(sr * 3) / sr)).astype(np.float32)
+    noise = (0.4 * np.random.RandomState(0).randn(sr * 5)).astype(np.float32)
+    clean, dirty = tmp_path / "c.wav", tmp_path / "d.wav"
+    sf.write(clean, np.concatenate([speech, np.zeros(sr // 2, np.float32)]), sr)
+    sf.write(dirty, np.concatenate([speech, noise]), sr)
+    assert A.tail_noise(clean, 3.0) == 0.0
+    assert A.tail_noise(dirty, 3.0) > 4.0
+    parts = [{"i": 0, "dur": 3.0, "text": "가" * 20}, {"i": 1, "dur": 3.2, "text": "가" * 20}, {"i": 2, "dur": 17.0, "text": "가" * 20}]
+    assert list(A.rate_outliers(parts)) == [2]
+
+
+def test_text_preview(client):
+    r = client.post("/api/text/preview", json={"text": "3~4개입니다.\n\n둘째", "language": "ko"}).json()
+    assert r["count"] == 2 and r["parts"][0].startswith("서너 개")

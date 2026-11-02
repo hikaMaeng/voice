@@ -339,10 +339,11 @@ def tts_job(job) -> dict:
             S.release(job, w)
         # 검사
         bad = []
+        outliers = A.rate_outliers(parts)
         for pt in todo:
             if job.cancel.is_set():
                 raise S.Cancelled()
-            why = A.check_wav(gdir / pt["file"], pt["text"])
+            why = A.check_wav(gdir / pt["file"], pt["text"]) or outliers.get(pt["i"], "")
             pt["checks"]["basic"] = why or "ok"
             if not why and params["lead_low_check"] and ref.get("f0_median"):
                 ll = A.lead_low(gdir / pt["file"], ref["f0_median"])
@@ -369,10 +370,15 @@ def tts_job(job) -> dict:
                         # 넘긴 글 · 원문 · 숫자를 푼 받아쓰기 중 가장 잘 맞는 짝을 쓴다
                         rate = max(A.match_rate(pt["text"], heard), A.match_rate(pt["text_orig"], heard),
                                    A.match_rate(pt["text"], latin_letters_ko(read_numbers(heard))))
-                        pt["checks"].update({"match": rate, "heard": heard, "verify_model": vm})
+                        segs = rr.get("segments") or []
+                        tail = A.tail_noise(gdir / pt["file"], segs[-1]["end"]) if segs else 0.0
+                        pt["checks"].update({"match": rate, "heard": heard, "verify_model": vm, "tail_noise_s": tail})
                         if rate < params["verify_min"]:
                             bad.append(pt)
                             job.say(f"문단 {pt['i'] + 1} 일치율 {rate:.3f} < {params['verify_min']}")
+                        elif tail >= 1.0:
+                            bad.append(pt)
+                            job.say(f"문단 {pt['i'] + 1} 말이 끝난 뒤 큰 소리 {tail:.1f}s")
                 finally:
                     S.release(job, vw)
                 timings["verify_s"] += time.time() - t0

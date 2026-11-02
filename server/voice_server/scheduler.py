@@ -174,7 +174,8 @@ def device_view() -> list[dict]:
         if g["temp_c"] is not None and g["temp_c"] >= settings.get("temp_limit_c"):
             why.append(f"온도 {g['temp_c']}°C")
         if settings.get("avoid_foreign_gpu") and foreign > settings.get("foreign_vram_gb"):
-            why.append(f"다른 프로그램 사용 {foreign:.1f} GB")
+            # Windows 는 프로세스별 사용량을 안 줘 「우리 작업자 실측·추정을 뺀 나머지」다 — 막 싣는 중인 우리 작업자가 섞일 수 있다
+            why.append(f"이 서버 밖 사용 추정 {foreign:.1f} GB")
         if g["uuid"] in _gpu_lock:
             why.append("작업 중")
         out.append({**g, "allowed": _allowed(g), "ours_gb": round(ours, 2), "foreign_est_gb": round(foreign, 2),

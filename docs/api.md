@@ -30,6 +30,7 @@ ref → `{ref_id, text, language, window}` · download → 모델별 확인 결�
 | `POST /api/refs` · `GET /api/refs` · `GET/PATCH/DELETE /api/refs/{id}` | 참조 세트 |
 | `POST /api/refs/{id}/recut {start,end,text?}` | 구간 다시 자르기(CPU, 즉시) |
 | `GET /api/refs/{id}/audio?which=clip|source` | 잘라 낸 참고 / 원본 |
+| `POST /api/text/preview {text, language, split, normalize_numbers}` | 생성 전 미리보기 → `{text_used, parts[], count}`(tts 와 같은 숫자 풀기·나누기) |
 | `POST /api/tts` · `GET /api/generations` · `GET/PATCH(name)/DELETE /api/generations/{id}` | 생성 · 결과 |
 | `GET /api/generations/{id}/audio[?part=n | ?which=ref]` | 결과 / 문단 / 그때 쓴 참고 |
 | `POST /api/asr` · `GET /api/transcripts` · `GET/PATCH/DELETE /api/transcripts/{id}` | 전사 |
@@ -78,7 +79,7 @@ ref → `{ref_id, text, language, window}` · download → 모델별 확인 결�
 `engine, model{ id, repo, path, revision(HF 커밋), sha(설정 파일 해시+가중치 이름·크기), files }, aux_models[], env{torch, transformers, …, freeze_sha, python},
 service{version, git, dirty}, device[{index, name, uuid}], language, text(원문), text_used(엔진에 넘긴 글), params(기본값까지 채운 전부; seed 는 실제 값),
 seed, ref{id, name, rev, language, text, window, cut, pad, f0_median, clip_sha256, consent, upload}, parts[{i, text, seed, seed_used, file, dur, infer_s, attempts,
-checks{basic, lead_low_s, match, heard, failed}}], output{file, sr, duration, sha256}, timings{gen_s, verify_s, total_s}, license, commercial, status: ok|warn`
+checks{basic, lead_low_s, match, heard, tail_noise_s, failed}}], output{file, sr, duration, sha256}, timings{gen_s, verify_s, total_s}, license, commercial, status: ok|warn`
 
 **불러오기** = 화면이 이 기록으로 폼을 채운다: `model`, `language`, `text`, `params`(seed 포함 실제 값),
 참고는 `ref.id` 가 아직 있고 `clip_sha256` 이 같으면 그 세트, 아니면 `ref_from_generation={id}` 로 그때 사본을 쓴다.

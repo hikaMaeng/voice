@@ -306,6 +306,23 @@ def tts(body: TTSBody):
     return S.submit(S.Job("tts", f"TTS {MODELS[body.model]['label']} — {body.text.strip()[:24]}", body.model_dump()), T.tts_job).view()
 
 
+class PreviewBody(BaseModel):
+    text: str
+    language: str = "ko"
+    split: str = "paragraph"
+    normalize_numbers: bool = True
+
+
+@app.post("/api/text/preview")
+def text_preview(body: PreviewBody):
+    """생성 전에 엔진에 넘길 글(숫자 풀기)과 문단 나누기를 본다 — tts_job 과 같은 함수."""
+    from . import audio as A
+    from .textnorm import read_numbers
+    used = read_numbers(body.text) if body.normalize_numbers and body.language == "ko" else body.text
+    parts = A.split_text(used, body.split)
+    return {"text_used": used, "parts": parts, "count": len(parts)}
+
+
 @app.get("/api/generations")
 def generations():
     return store.list("generations")

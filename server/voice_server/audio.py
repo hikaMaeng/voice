@@ -188,6 +188,37 @@ def check_wav(p: Path, text: str) -> str:
     return ""
 
 
+def tail_noise(p: Path, speech_end: float, margin: float = 0.4) -> float:
+    """받아쓰기가 끝난 시각(speech_end) 뒤에 남은 큰 소리의 길이(초). 말이 끝났는데 소리가 이어지면 폭주한 꼬리다
+    (실측: Chatterbox 문단 끝에 말 아닌 큰 소리 약 14 s — 받아쓰기는 소음을 무시해 일치율 1.0, 길이 검사는 긴 문단이라 통과)."""
+    w, sr = read_mono(p)
+    a = int((speech_end + margin) * sr)
+    if a >= len(w):
+        return 0.0
+    hop = int(0.02 * sr)
+    body = w[:int(speech_end * sr)]
+    ref = float(np.sqrt((body ** 2).mean())) if len(body) else 0.0
+    tail = w[a:len(w) // hop * hop] if len(w) - a >= hop else w[a:]
+    n = len(tail) // hop
+    if n == 0 or ref <= 0:
+        return 0.0
+    e = np.sqrt((tail[:n * hop].reshape(n, hop) ** 2).mean(1))
+    return round(float((e > 0.15 * ref).sum()) * 0.02, 2)
+
+
+def rate_outliers(parts: list[dict], factor: float = 1.8, extra_s: float = 2.0) -> dict[int, str]:
+    """같은 생성 안에서 글자당 길이가 다른 문단보다 크게 긴 문단(문단 3개 이상일 때). 받아쓰기 없이도 꼬리 폭주를 잡는다."""
+    rows = [(pt["i"], pt["dur"], max(1, len(norm_text(pt["text"])))) for pt in parts if pt.get("dur")]
+    if len(rows) < 3:
+        return {}
+    med = float(np.median([d / n for _, d, n in rows]))
+    out = {}
+    for i, d, n in rows:
+        if d / n > factor * med and d - med * n > extra_s:
+            out[i] = f"다른 문단보다 길다 {d:.1f}s(예상 {med * n:.1f}s)"
+    return out
+
+
 def trim_edges(w: np.ndarray, sr: int, thr: float = 0.01) -> np.ndarray:
     idx = np.where(np.abs(w) > thr)[0]
     if not len(idx):
