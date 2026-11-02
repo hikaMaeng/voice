@@ -164,6 +164,7 @@ test("실제 엔진: Qwen3-TTS 1.7B 를 웹에서 생성(@gpu)", async ({ page, 
   await form.getByLabel("참조 세트", { exact: true }).selectOption(`ref:${ref.id}`);
   await form.getByLabel("대본", { exact: true }).fill("웹 화면에서 만든 첫 번째 문장입니다.\n\n두 번째 문단도 이어서 읽습니다.");
   await form.getByTestId("param-seed").fill("4242");
+  await form.getByTestId("tts-params-advanced").locator("summary").click();   // 고급 옵션(접힘)
   await form.getByTestId("param-verify").check();
   await form.getByRole("button", { name: "생성" }).click();
   await expect(page.getByTestId("tts-job")).toHaveAttribute("data-status", "done", { timeout: 14 * 60_000 });

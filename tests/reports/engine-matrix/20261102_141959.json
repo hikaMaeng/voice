@@ -1,0 +1,407 @@
+{
+ "started": "2026-11-02 14:12:20",
+ "base": "http://127.0.0.1:8765",
+ "ref": "20261102-121959-129c4b",
+ "upload": "20261102-141117-e11609",
+ "seed": 2026,
+ "verify": false,
+ "text": "이해되는 에이아이, 1편. 엘엘엠의 어텐션이란?\n\n똑같이 밥이 들어가는데, 하나는 걱정이고 하나는 핀잔이죠.",
+ "settings": {
+  "model_root": "S:\\models",
+  "model_paths": {},
+  "gpu_mode": "auto",
+  "allowed_gpus": [
+   "GPU-38e6dbac-fee5-ac16-62d4-cfacbe02f8ed"
+  ],
+  "vram_reserve_gb": 1,
+  "avoid_foreign_gpu": true,
+  "foreign_vram_gb": 2,
+  "temp_limit_c": 87,
+  "allow_cpu": true,
+  "cpu_threads": 0,
+  "idle_unload_min": 20,
+  "max_resident": 3,
+  "hf_endpoint": "",
+  "show_test_engines": true,
+  "default_tts_model": "qwen3-tts-1.7b-base",
+  "default_asr_model": "fw-large-v3"
+ },
+ "gpus": [
+  {
+   "index": 0,
+   "name": "NVIDIA GeForce RTX 3090",
+   "uuid": "GPU-38e6dbac-fee5-ac16-62d4-cfacbe02f8ed",
+   "allowed": true,
+   "blocked": []
+  },
+  {
+   "index": 1,
+   "name": "NVIDIA GeForce RTX 4080",
+   "uuid": "GPU-79caabbe-c843-631f-3cea-9c01e652c78c",
+   "allowed": false,
+   "blocked": [
+    "설정에서 제외"
+   ]
+  }
+ ],
+ "service": {
+  "version": "0.1.0",
+  "git": "0bd0db1",
+  "dirty": true
+ },
+ "tts": [],
+ "asr": [
+  {
+   "model": "fw-large-v3",
+   "status": "done",
+   "error": "",
+   "devices": [
+    0
+   ],
+   "wall_s": 36.1,
+   "transcript_id": "20261102-141256-345ff1",
+   "language": "ko",
+   "segments": 4,
+   "timings": {
+    "infer_s": 1.87,
+    "total_s": 35.44
+   },
+   "words": 13,
+   "env": {
+    "ctranslate2": "4.8.4",
+    "faster-whisper": "1.2.1",
+    "numpy": "2.2.6",
+    "onnxruntime": "1.31.1",
+    "freeze_sha": "5635e860761991c7",
+    "python": "3.12.13"
+   },
+   "first": [
+    [
+     0.0,
+     2.08,
+     "이해해야 되는 AI 1편"
+    ],
+    [
+     2.08,
+     4.18,
+     "LLM의 어텐션이란?"
+    ],
+    [
+     4.68,
+     6.04,
+     "독같이 밥이 들어가는데"
+    ]
+   ]
+  },
+  {
+   "model": "fw-large-v3-turbo",
+   "status": "done",
+   "error": "",
+   "devices": [
+    0
+   ],
+   "wall_s": 21.1,
+   "transcript_id": "20261102-141316-0479fc",
+   "language": "ko",
+   "segments": 2,
+   "timings": {
+    "infer_s": 1.04,
+    "total_s": 19.43
+   },
+   "words": 13,
+   "env": {
+    "ctranslate2": "4.8.4",
+    "faster-whisper": "1.2.1",
+    "numpy": "2.2.6",
+    "onnxruntime": "1.31.1",
+    "freeze_sha": "5635e860761991c7",
+    "python": "3.12.13"
+   },
+   "first": [
+    [
+     0.0,
+     4.24,
+     "이해해야 되는 AI 1편, LLM의 어텐션이란?"
+    ],
+    [
+     4.46,
+     9.22,
+     "똑같이 밥이 들어가는데 하나는 걱정이고 하나는 빈잔이죠."
+    ]
+   ]
+  },
+  {
+   "model": "fw-medium",
+   "status": "done",
+   "error": "",
+   "devices": [
+    0
+   ],
+   "wall_s": 21.2,
+   "transcript_id": "20261102-141336-004047",
+   "language": "ko",
+   "segments": 5,
+   "timings": {
+    "infer_s": 1.55,
+    "total_s": 18.91
+   },
+   "words": 13,
+   "env": {
+    "ctranslate2": "4.8.4",
+    "faster-whisper": "1.2.1",
+    "numpy": "2.2.6",
+    "onnxruntime": "1.31.1",
+    "freeze_sha": "5635e860761991c7",
+    "python": "3.12.13"
+   },
+   "first": [
+    [
+     0.0,
+     2.68,
+     "이해해야 되는 AI 1편"
+    ],
+    [
+     2.68,
+     4.84,
+     "LLM의 attention이란?"
+    ],
+    [
+     5.14,
+     6.76,
+     "똑같이 밥이 들어가는데"
+    ]
+   ]
+  },
+  {
+   "model": "whisper-large-v3",
+   "status": "done",
+   "error": "",
+   "devices": [
+    0
+   ],
+   "wall_s": 63.3,
+   "transcript_id": "20261102-141440-5a0fab",
+   "language": "ko",
+   "segments": 2,
+   "timings": {
+    "infer_s": 4.69,
+    "total_s": 61.58
+   },
+   "words": 13,
+   "env": {
+    "accelerate": "1.12.0",
+    "numpy": "2.5.4",
+    "torch": "2.8.0+cu128",
+    "torchaudio": "2.8.0+cu128",
+    "transformers": "4.57.3",
+    "freeze_sha": "4f7469947ab3da5c",
+    "python": "3.12.13"
+   },
+   "first": [
+    [
+     0.0,
+     4.14,
+     "이해해야 되는 AI 1편 LLM의 어텐션이란?"
+    ],
+    [
+     4.84,
+     9.12,
+     "독같이 밥이 들어가는데 하나는 걱정이고 하나는 빈잔이죠"
+    ]
+   ]
+  },
+  {
+   "model": "whisper-large-v3-turbo",
+   "status": "done",
+   "error": "",
+   "devices": [
+    0
+   ],
+   "wall_s": 42.2,
+   "transcript_id": "20261102-141522-703849",
+   "language": "ko",
+   "segments": 3,
+   "timings": {
+    "infer_s": 2.16,
+    "total_s": 40.14
+   },
+   "words": 13,
+   "env": {
+    "accelerate": "1.12.0",
+    "numpy": "2.5.4",
+    "torch": "2.8.0+cu128",
+    "torchaudio": "2.8.0+cu128",
+    "transformers": "4.57.3",
+    "freeze_sha": "4f7469947ab3da5c",
+    "python": "3.12.13"
+   },
+   "first": [
+    [
+     0.0,
+     2.52,
+     "이해해야 되는 AI 1편."
+    ],
+    [
+     2.52,
+     4.44,
+     "LLM의 어텐션이란?"
+    ],
+    [
+     4.84,
+     9.28,
+     "똑같이 밥이 들어가는데 하나는 걱정이고 하나는 빈잔이죠."
+    ]
+   ]
+  },
+  {
+   "model": "qwen3-asr-1.7b",
+   "status": "done",
+   "error": "",
+   "devices": [
+    0
+   ],
+   "wall_s": 96.3,
+   "transcript_id": "20261102-141659-629fca",
+   "language": "ko",
+   "segments": 2,
+   "timings": {
+    "infer_s": 5.67,
+    "total_s": 95.36
+   },
+   "words": 17,
+   "env": {
+    "accelerate": "1.12.0",
+    "numpy": "2.5.4",
+    "qwen-asr": "0.0.6",
+    "torch": "2.8.0+cu128",
+    "torchaudio": "2.8.0+cu128",
+    "transformers": "4.57.6",
+    "freeze_sha": "8e546fd40a086110",
+    "python": "3.12.13"
+   },
+   "first": [
+    [
+     0.32,
+     2.24,
+     "이해되는 AI 일편"
+    ],
+    [
+     3.2,
+     9.28,
+     "LLM의 어텐션이란 똑같이 밥이 들어가는데 하나는 걱정이고 하나는 빈잔이죠"
+    ]
+   ]
+  },
+  {
+   "model": "qwen3-asr-0.6b",
+   "status": "done",
+   "error": "",
+   "devices": [
+    0
+   ],
+   "wall_s": 72.3,
+   "transcript_id": "20261102-141810-a1469f",
+   "language": "ko",
+   "segments": 1,
+   "timings": {
+    "infer_s": 6.23,
+    "total_s": 69.77
+   },
+   "words": 19,
+   "env": {
+    "accelerate": "1.12.0",
+    "numpy": "2.5.4",
+    "qwen-asr": "0.0.6",
+    "torch": "2.8.0+cu128",
+    "torchaudio": "2.8.0+cu128",
+    "transformers": "4.57.6",
+    "freeze_sha": "8e546fd40a086110",
+    "python": "3.12.13"
+   },
+   "first": [
+    [
+     0.0,
+     9.28,
+     "소 이해되는 ai 일편 lrm 의 어텐션이란 똑같이 밥이 들어가는데 하나는 걱정이고 하나는 빈잔이죠"
+    ]
+   ]
+  },
+  {
+   "model": "sensevoice-small",
+   "status": "done",
+   "error": "",
+   "devices": [
+    0
+   ],
+   "wall_s": 39.4,
+   "transcript_id": "20261102-141850-ffa18e",
+   "language": "ko",
+   "segments": 1,
+   "timings": {
+    "infer_s": 0.5,
+    "total_s": 38.3
+   },
+   "words": 0,
+   "env": {
+    "funasr": "1.4.19",
+    "numpy": "2.4.6",
+    "torch": "2.8.0+cu128",
+    "torchaudio": "2.8.0+cu128",
+    "transformers": "5.22.1",
+    "freeze_sha": "bcc3f269626424c2",
+    "python": "3.11.15"
+   },
+   "first": [
+    [
+     0.0,
+     9.29,
+     "이해해야 되는 에이아이 1편 에레렘의 어텐션이란 똑같이 밥이 들어가는데 하나는 걱정이고 하나는 빈잔이죠."
+    ]
+   ]
+  },
+  {
+   "model": "nemotron-3.5-asr-0.6b",
+   "status": "done",
+   "error": "",
+   "devices": [
+    0
+   ],
+   "wall_s": 66.4,
+   "transcript_id": "20261102-141956-ed6ff8",
+   "language": "ko",
+   "segments": 5,
+   "timings": {
+    "infer_s": 1.07,
+    "total_s": 63.88
+   },
+   "words": 0,
+   "env": {
+    "accelerate": "1.15.0",
+    "numpy": "2.5.4",
+    "torch": "2.9.1+cu128",
+    "torchaudio": "2.9.1+cu128",
+    "transformers": "5.22.1",
+    "freeze_sha": "f917edd7362da049",
+    "python": "3.12.13"
+   },
+   "first": [
+    [
+     0.0,
+     2.32,
+     "そ、家 되는 에이 아이 일편"
+    ],
+    [
+     2.5,
+     4.3,
+     "에레메 어테션이"
+    ],
+    [
+     4.78,
+     6.46,
+     "똑같이 밥이 들어가는데"
+    ]
+   ]
+  }
+ ],
+ "finished": "2026-11-02 14:19:59"
+}

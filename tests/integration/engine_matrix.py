@@ -1,7 +1,7 @@
 """엔진 실측 — 떠 있는 서버의 API 로 TTS·ASR 모델을 같은 조건으로 돌리고 결과를 JSON 으로 남긴다.
 
   uv run python tests/integration/engine_matrix.py --base http://127.0.0.1:8770 --ref <참조 세트 id> --upload <ASR 용 업로드 id>
-      [--tts qwen3-tts-1.7b-base,…] [--asr fw-large-v3,…] [--out tests/reports/engine-matrix]
+      [--tts qwen3-tts-1.7b-base,… | -] [--asr fw-large-v3,… | -] [--out tests/reports/engine-matrix]   (- = 건너뜀, 생략 = 전부)
 
 기록하는 것: 작업 상태·오류, 장치, 생성 기록의 timings·문단별 검사(match·lead_low_s·basic·attempts)·출력 길이,
 ASR 은 구간 수·언어·첫 글·infer_s. 숫자는 서버가 남긴 기록에서 그대로 옮긴다(이 스크립트가 계산하지 않는다).
@@ -52,8 +52,9 @@ def main():
            "verify": a.verify, "text": TEXT, "settings": req(a.base, "GET", "/api/settings"),
            "gpus": [{k: g[k] for k in ("index", "name", "uuid", "allowed", "blocked")} for g in sysinfo["gpus"]],
            "service": sysinfo["service"], "tts": [], "asr": []}
-    tts = [m for m in a.tts.split(",") if m] or [k for k, m in cat["models"].items() if m["kind"] == "tts" and not m.get("builtin")]
-    asr = [m for m in a.asr.split(",") if m] or [k for k, m in cat["models"].items() if m["kind"] == "asr" and not m.get("builtin")]
+    # "-" = 그 종류는 건너뛴다
+    tts = [] if a.tts == "-" else [m for m in a.tts.split(",") if m] or [k for k, m in cat["models"].items() if m["kind"] == "tts" and not m.get("builtin")]
+    asr = [] if a.asr == "-" else [m for m in a.asr.split(",") if m] or [k for k, m in cat["models"].items() if m["kind"] == "asr" and not m.get("builtin")]
     for mid in tts:
         t0 = time.time()
         j = req(a.base, "POST", "/api/tts", {"model": mid, "text": TEXT, "language": "ko", "ref_id": a.ref,

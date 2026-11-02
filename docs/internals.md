@@ -17,8 +17,19 @@ TTS 10종(실측: 원격 RTX 4080 16 GB, 일본어 참고 11.5 s → 한국어 1
 | drama · Fish Drama 3 Q4_K GGUF | drama(speech.cpp 0.10.0 Vulkan) | △ | 0.955 | 16 GB+CPU | Vulkan 번호 ≠ CUDA 번호 |
 | xvoice · X-Voice Stage1 0.4B | xvoice(transformers 4.48.3, eSpeak) | ✕ NC | 0.897 | 2.0 GB | 첫머리 저음 3/10 |
 
-ASR 4종 7모델: faster-whisper(large-v3 **기본**·large-v3-turbo·medium) · Whisper transformers(large-v3·large-v3-turbo) ·
-Qwen3-ASR(1.7B·0.6B + ForcedAligner 0.6B) · SenseVoice Small(+FSMN VAD). ASR 끼리는 아직 비교 실측이 없다.
+ASR 5종 9모델: faster-whisper(large-v3 **기본**·large-v3-turbo·medium) · Whisper transformers(large-v3·large-v3-turbo) ·
+Qwen3-ASR(1.7B·0.6B + ForcedAligner 0.6B) · SenseVoice Small(+FSMN VAD) · NVIDIA Nemotron 3.5 ASR Streaming 0.6B.
+
+| ASR | 시각 | 비고 |
+|---|---|---|
+| faster-whisper | 단어(±0.2 s) | VAD. PyAV 판 충돌로 파일 대신 16 kHz 배열을 넘긴다 |
+| Whisper transformers | 단어 / 일·중은 구간 | 띄어쓰기 없는 언어는 파이프라인 「단어」가 문장 덩어리(일본어 25 s 에 7개) → 구간 시각 |
+| Qwen3-ASR | 단어(ForcedAligner, 11개 언어) | |
+| SenseVoice | VAD 구간(상한 10 s) | 30 s 상한이면 깨끗한 음성 25 s 가 한 구간이었다 |
+| Nemotron 3.5 ASR | 소리 크기로 나눈 구간 | 카드에 시각 출력이 없다. NeMo 대신 transformers(`AutoModelForRNNT`, ≥5.13). 언어는 locale(ko-KR·ja-JP — `ja` 는 거절된다). **자동 감지는 한국어 첫 구간을 일본어로 오인**(실측) → 언어 지정 권장 |
+
+넣지 않은 것: **Nemotron 3.5 Transcribe 30B-A4B**(2026-10-28, 67.5 GB BF16) — 공식 런타임이 vLLM(Linux)·H100 80 GB 대상이고
+Windows 네이티브는 GGML 로 RTX 5090·PRO 6000 만 지원한다고 카드가 적는다. 3090·4080 에서는 돌릴 수 없다(FP8·NVFP4 판도 30B 급).
 Step-Audio 는 한국어 발음이 무너져 넣지 않는다(WanAvatar 결정).
 
 ## 엔진 환경 설치 정의 (`engines/envs/<env>/env.json`)

@@ -68,6 +68,41 @@ def cuda_dll_dirs() -> None:
                 os.environ["PATH"] = b + os.pathsep + os.environ.get("PATH", "")
 
 
+def energy_segments(y, sr: int, min_silence_s: float = 0.35, max_len_s: float = 15.0, thr: float = 0.04):
+    """시각을 주지 않는 ASR 용 — 소리 크기로 말 구간을 나눈다. [(시작 s, 끝 s), …]. 긴 구간은 가장 조용한 곳에서 자른다."""
+    import numpy as np
+    hop = max(1, int(0.02 * sr))
+    n = len(y) // hop
+    if n == 0:
+        return []
+    e = np.sqrt((y[:n * hop].reshape(n, hop) ** 2).mean(1))
+    level = float(np.percentile(e, 95)) + 1e-8
+    voiced = e > thr * level
+    gap = int(min_silence_s / 0.02)
+    spans, start, quiet = [], None, 0
+    for k, v in enumerate(voiced):
+        if v:
+            if start is None:
+                start = k
+            quiet = 0
+        elif start is not None:
+            quiet += 1
+            if quiet >= gap:
+                spans.append([start, k - quiet + 1])
+                start, quiet = None, 0
+    if start is not None:
+        spans.append([start, n])
+    out, lim = [], int(max_len_s / 0.02)
+    for a, b in spans:
+        while b - a > lim:   # 너무 길면 뒤쪽 절반에서 가장 조용한 프레임으로 자른다
+            cut = a + lim // 2 + int(np.argmin(e[a + lim // 2: a + lim]))
+            out.append((a, cut))
+            a = cut
+        out.append((a, b))
+    pad = 0.1
+    return [(max(0.0, a * 0.02 - pad), min(len(y) / sr, b * 0.02 + pad)) for a, b in out if (b - a) * 0.02 >= 0.2]
+
+
 class PromptCache:
     """참고 음성(경로+전사문) → 엔진의 복제 프롬프트. 같은 세트로 여러 번 만들 때 다시 인코딩하지 않는다.
     키: (경로, 파일 크기·mtime, 전사문). 상한 8개 — 넘으면 가장 오래된 것을 버린다. 작업자 프로세스 수명 동안."""

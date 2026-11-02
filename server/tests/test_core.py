@@ -26,7 +26,7 @@ def test_catalog_complete():
     asr = [k for k, e in ENGINES.items() if e["kind"] == "asr" and not e.get("test")]
     assert set(tts) == {"qwen", "moss", "higgs", "omni", "chat", "cosy", "fish", "drama", "xvoice"}   # 10번째는 moss 8B 모델
     assert len([m for m in MODELS.values() if m["kind"] == "tts"]) >= 10
-    assert len(asr) >= 4
+    assert len(asr) >= 5
     for m in MODELS.values():
         assert "license" in m and "commercial" in m
         for r in m["requires"]:

@@ -200,6 +200,16 @@ ENGINES: dict[str, dict] = {
             P("merge_length_s", "구간 합치기(초)", "float", 8, "짧은 VAD 구간을 이 길이까지 합친다(VAD 한 구간 상한 10 s)", min=1, max=30, step=1),
         ],
     },
+    "nemotron": {
+        "kind": "asr", "label": "NVIDIA Nemotron 3.5 ASR (transformers)", "env": "nemotron", "adapter": "asr_nemotron",
+        "languages": ["ko", "ja", "en", "zh", "de", "fr", "es", "it", "pt", "ru"], "cpu_ok": True,
+        "use": "NVIDIA 다국어 스트리밍 ASR(40개 로케일, 한국어·일본어 「transcription-ready」). 문장부호·대소문자 포함.",
+        "caveat": "모델이 시각을 주지 않는다 — 소리 크기로 나눈 구간 단위 시각(단어 시각 없음). 공식 런타임은 NeMo, 여기는 transformers 경로.",
+        "params": [
+            P("min_silence_s", "구간을 나눌 무음(초)", "float", 0.35, "", "basic", min=0.1, max=2, step=0.05),
+            P("segment_max_s", "구간 최대 길이(초)", "float", 15.0, "", min=3, max=30, step=1),
+        ],
+    },
     # ───────────────────────── 시험용 ─────────────────────────
     "mock_tts": {
         "kind": "tts", "label": "시험용 TTS(모의)", "env": "server", "adapter": "mock", "test": True,
@@ -284,6 +294,10 @@ MODELS: dict[str, dict] = {
                          "license": "FunASR 모델 라이선스(모델 카드 확인)", "commercial": None, "requires": ["fsmn-vad"], "need": ["model.pt"]},
     "fsmn-vad": {"engine": "sensevoice", "aux": True, "repo": "funasr/fsmn-vad", "label": "FSMN VAD(구간 나누기)", "size_gb": 0.01,
                  "license": "FunASR 모델 라이선스(모델 카드 확인)", "commercial": None, "need": ["model.pt"]},
+    "nemotron-3.5-asr-0.6b": {"engine": "nemotron", "repo": "nvidia/nemotron-3.5-asr-streaming-0.6b", "label": "Nemotron 3.5 ASR Streaming 0.6B",
+                              "size_gb": 2.6, "vram_gb": 3.0, "license": "OpenMDW-1.1", "commercial": True,
+                              "allow": ["*.json", "model.safetensors", "*.md"], "need": ["config.json", "model.safetensors"],
+                              "measured": "카드: 한국어 CER 7.12 · 일본어 CER 11.48(1.12 s 청크, 언어 지정)"},
     # 시험용
     "mock-tts": {"engine": "mock_tts", "repo": "", "label": "모의 TTS", "size_gb": 0, "vram_gb": 0, "license": "—", "commercial": True, "builtin": True, "need": []},
     "mock-asr": {"engine": "mock_asr", "repo": "", "label": "모의 ASR", "size_gb": 0, "vram_gb": 0, "license": "—", "commercial": True, "builtin": True, "need": []},
